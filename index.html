@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>えいご文法アイランド｜英検5級</title>
+<style>
+:root{
+  --sea:#1B7F94;
+  --deep:#0B4655;
+  --sky:#2BC4D6;
+  --sand:#FFE7B3;
+  --coral:#FF7A6B;
+  --sun:#FFC93C;
+  --leaf:#4CC38A;
+  --ink:#123844;
+  --paper:#FFFDF5;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Hiragino Maru Gothic ProN','ヒラギノ丸ゴ ProN W4','Hiragino Sans','Yu Gothic',sans-serif;
+  background:var(--deep);
+  color:var(--ink);
+  -webkit-text-size-adjust:100%;
+  overscroll-behavior-y:none;
+}
+#app{
+  max-width:560px;margin:0 auto;min-height:100vh;min-height:100dvh;
+  background:linear-gradient(180deg,#0B4655 0%,#146275 40%,#1B8FA3 100%);
+  padding:env(safe-area-inset-top) 0 calc(28px + env(safe-area-inset-bottom));
+  position:relative;overflow-x:hidden;
+}
+/* ---- 波のもよう ---- */
+#app::before{
+  content:"";position:fixed;left:0;right:0;top:0;height:100%;pointer-events:none;
+  background-image:radial-gradient(circle at 12% 18%,rgba(255,255,255,.10) 0 2px,transparent 3px),
+                   radial-gradient(circle at 78% 42%,rgba(255,255,255,.08) 0 2px,transparent 3px),
+                   radial-gradient(circle at 40% 76%,rgba(255,255,255,.07) 0 2px,transparent 3px);
+  background-size:180px 200px;opacity:.9;
+}
+.screen{display:none;position:relative;z-index:2;padding:0 16px;}
+.screen.on{display:block;animation:pop .28s ease;}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---- ヘッダー ---- */
+.brand{text-align:center;padding:22px 0 6px;color:#fff;}
+.brand .sub{font-size:12px;letter-spacing:.28em;color:var(--sand);margin-bottom:6px;}
+.brand h1{
+  margin:0;font-size:30px;line-height:1.25;font-weight:800;
+  text-shadow:0 3px 0 #0A3D4A, 0 6px 14px rgba(0,0,0,.3);
+}
+.brand h1 em{font-style:normal;color:var(--sun);}
+.compass{
+  margin:14px auto 4px;max-width:330px;background:rgba(255,255,255,.14);
+  border-radius:16px;padding:10px 14px;color:#fff;font-size:13px;
+  display:flex;align-items:center;gap:10px;
+}
+.compass .bar{flex:1;height:12px;border-radius:99px;background:rgba(0,0,0,.25);overflow:hidden;}
+.compass .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--sun),var(--leaf));width:0;transition:width .5s;}
+
+/* ---- 島マップ ---- */
+.map{padding:18px 4px 10px;position:relative;}
+.island{
+  width:86%;background:var(--paper);border-radius:26px;padding:14px 16px;
+  box-shadow:0 8px 0 rgba(0,0,0,.18), inset 0 -4px 0 rgba(0,0,0,.05);
+  display:flex;align-items:center;gap:12px;border:none;text-align:left;
+  font-family:inherit;color:var(--ink);position:relative;
+  transition:transform .12s;
+}
+.island:active{transform:translateY(4px) scale(.99);}
+.island.right{margin-left:auto;}
+.island .num{
+  position:absolute;top:-10px;left:14px;background:var(--deep);color:var(--sand);
+  font-size:11px;padding:3px 9px;border-radius:99px;letter-spacing:.12em;
+}
+.island .emo{font-size:34px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));}
+.island .tt{flex:1;min-width:0;}
+.island .tt b{display:block;font-size:17px;font-weight:800;}
+.island .tt span{font-size:12px;color:#6a8590;}
+.island .st{font-size:14px;letter-spacing:-1px;color:#d8d3c4;white-space:nowrap;}
+.island .st.got{color:var(--sun);text-shadow:0 1px 0 #c98f00;}
+.path{height:34px;display:flex;align-items:center;justify-content:center;}
+.path i{
+  width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);
+  margin:0 5px;display:block;
+}
+
+/* ---- ボタン ---- */
+.btn{
+  display:block;width:100%;border:none;border-radius:20px;padding:16px;
+  font-family:inherit;font-size:17px;font-weight:800;color:#fff;
+  background:var(--coral);box-shadow:0 6px 0 #c9503f;margin:10px 0;
+  transition:transform .1s,box-shadow .1s;
+}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 #c9503f;}
+.btn.g{background:var(--leaf);box-shadow:0 6px 0 #2e9265;}
+.btn.g:active{box-shadow:0 1px 0 #2e9265;}
+.btn.y{background:var(--sun);color:#5a4200;box-shadow:0 6px 0 #cf9c17;}
+.btn.y:active{box-shadow:0 1px 0 #cf9c17;}
+.btn.ghost{background:rgba(255,255,255,.16);box-shadow:none;font-size:15px;}
+.back{
+  background:none;border:none;color:#cfeef5;font-family:inherit;font-size:15px;
+  padding:16px 4px 6px;
+}
+
+/* ---- カード ---- */
+.card{
+  background:var(--paper);border-radius:22px;padding:16px 18px;margin:12px 0;
+  box-shadow:0 6px 0 rgba(0,0,0,.15);
+}
+.card h3{margin:0 0 10px;font-size:17px;color:var(--sea);}
+.card p,.card .ln{margin:6px 0;font-size:15px;line-height:1.7;}
+.ex{background:#EAF7FA;border-radius:14px;padding:10px 12px;margin:8px 0;}
+.ex b{display:block;font-size:16px;color:#0d5a6b;letter-spacing:.01em;}
+.ex span{font-size:13px;color:#5e7c85;}
+.hl{background:linear-gradient(transparent 60%,var(--sun) 60%);font-weight:800;}
+.chip{display:inline-block;background:var(--sky);color:#fff;border-radius:99px;
+  padding:3px 12px;font-size:12px;margin:0 4px 6px 0;}
+
+/* ---- クイズ ---- */
+.qbar{display:flex;align-items:center;gap:10px;padding:14px 0 6px;color:#fff;font-size:13px;}
+.qbar .bar{flex:1;height:14px;border-radius:99px;background:rgba(0,0,0,.28);overflow:hidden;}
+.qbar .bar i{display:block;height:100%;background:var(--sun);width:0;transition:width .35s;}
+.qcard{
+  background:var(--paper);border-radius:24px;padding:22px 18px;
+  box-shadow:0 8px 0 rgba(0,0,0,.16);text-align:center;
+}
+.qcard .ja{font-size:14px;color:#6a8590;margin-bottom:12px;}
+.qcard .en{
+  font-family:'Verdana','Trebuchet MS',sans-serif;font-size:23px;line-height:1.6;
+  font-weight:700;color:#123844;word-break:break-word;
+}
+.qcard .en u{text-decoration:none;color:var(--coral);}
+.opts{margin-top:14px;}
+.opt{
+  display:block;width:100%;border:3px solid #dfeef2;background:#fff;border-radius:18px;
+  padding:15px;margin:9px 0;font-family:'Verdana','Trebuchet MS',sans-serif;
+  font-size:19px;font-weight:700;color:#123844;box-shadow:0 4px 0 rgba(0,0,0,.10);
+  transition:transform .1s;
+}
+.opt:active{transform:translateY(3px);}
+.opt.ok{background:#DFF7E9;border-color:var(--leaf);color:#17714a;}
+.opt.ng{background:#FFE3DF;border-color:var(--coral);color:#b3382a;}
+.opt.dim{opacity:.45;}
+.judge{
+  border-radius:20px;padding:14px 16px;margin-top:12px;color:#fff;
+  animation:pop .25s ease;
+}
+.judge.y{background:#2E9265;}
+.judge.n{background:#C9503F;}
+.judge b{font-size:19px;display:block;margin-bottom:4px;}
+.judge p{margin:4px 0 0;font-size:14px;line-height:1.6;}
+.judge .ans{font-family:'Verdana',sans-serif;font-size:16px;font-weight:700;}
+
+/* ---- けっか ---- */
+.result{text-align:center;color:#fff;padding-top:20px;}
+.result .stars{font-size:44px;letter-spacing:6px;}
+.result .score{font-size:56px;font-weight:800;color:var(--sun);line-height:1;margin:6px 0;}
+.result .msg{font-size:18px;font-weight:800;margin:8px 0 16px;}
+.result .sm{font-size:13px;color:#cfeef5;}
+
+/* ---- 出発の港 ---- */
+.port{
+  width:100%;border:none;text-align:left;font-family:inherit;color:var(--ink);
+  background:linear-gradient(160deg,#FFF6DF,#FFE3B0);
+  border-radius:26px;padding:16px 18px;margin:16px 0 4px;
+  box-shadow:0 8px 0 #C99A3E, inset 0 -4px 0 rgba(0,0,0,.05);position:relative;
+}
+.port:active{transform:translateY(4px);box-shadow:0 4px 0 #C99A3E;}
+.port .tag{position:absolute;top:-11px;left:16px;background:var(--coral);color:#fff;
+  font-size:11px;padding:4px 11px;border-radius:99px;letter-spacing:.08em;}
+.port b{display:block;font-size:20px;font-weight:800;margin:2px 0 2px;}
+.port .chant{font-family:'Verdana',sans-serif;font-size:15px;color:#8a6410;font-weight:700;}
+.port .st{position:absolute;right:16px;bottom:14px;font-size:14px;letter-spacing:-1px;color:#d8c9a4;}
+.port .st.got{color:#E8930C;}
+.island.lock{filter:grayscale(.7);opacity:.55;}
+.island.lock .emo{filter:none;}
+
+/* ---- 代名詞の表 ---- */
+.ptable{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:15px;}
+.ptable th{font-size:11px;color:#6a8590;font-weight:700;padding:0 2px 2px;}
+.ptable td{
+  background:#EAF7FA;padding:9px 4px;text-align:center;
+  font-family:'Verdana','Trebuchet MS',sans-serif;font-weight:700;color:#0d5a6b;
+}
+.ptable td:first-child{border-radius:12px 0 0 12px;}
+.ptable td:last-child{border-radius:0 12px 12px 0;}
+.ptable tr.hi td{background:var(--sun);color:#5a4200;}
+.kana{font-size:12px;color:#8a6410;font-family:inherit;}
+
+.note{color:#cfeef5;font-size:13px;text-align:center;padding:6px 0 0;}
+.empty{background:rgba(255,255,255,.12);border-radius:20px;padding:26px 16px;color:#eaf9fc;text-align:center;font-size:15px;line-height:1.7;}
+h2.sc{color:#fff;font-size:22px;margin:6px 0 2px;}
+p.scsub{color:#bfe6ee;font-size:13px;margin:0 0 12px;}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ========== ホーム ========== -->
+<section id="s-home" class="screen on">
+  <div class="brand">
+    <div class="sub">EIKEN GRADE 5</div>
+    <h1>えいご<em>文法</em>アイランド</h1>
+  </div>
+  <div class="compass">
+    <span>🧭</span>
+    <div class="bar"><i id="allbar"></i></div>
+    <b id="allpct">0%</b>
+  </div>
+
+  <button class="port" id="portCard" onclick="openPort()">
+    <span class="tag">まずは ここから！</span>
+    <span style="font-size:30px">🚢</span>
+    <b>出発の港：だいめいし</b>
+    <span class="chant">I - my - me - mine / You - your - you - yours ...</span>
+    <span class="st" id="portStar">☆☆☆</span>
+  </button>
+  <p class="note" id="portNote" style="padding:10px 0 0">港をクリアすると 8つの島がひらくよ 🔓</p>
+
+  <div class="map" id="map"></div>
+
+  <button class="btn y" onclick="startMix()">🏆 ぜんぶミックステスト（20もん）</button>
+  <button class="btn ghost" onclick="openReview()">📕 まちがいノート（<span id="wrongcount">0</span>）</button>
+  <p class="note">8つの島をぜんぶクリアしたら 英検5級の文法マスター！</p>
+  <button class="btn ghost" onclick="skipPort()">港をとばして 島へすすむ</button>
+  <button class="btn ghost" onclick="resetAll()">きろくをリセット</button>
+</section>
+
+<!-- ========== ステージメニュー ========== -->
+<section id="s-stage" class="screen">
+  <button class="back" onclick="go('home')">‹ 島マップにもどる</button>
+  <div class="card" id="stageHead"></div>
+  <button class="btn g" onclick="startLearn()">📖 まなぶ（かいせつ）</button>
+  <button class="btn" onclick="startQuiz()">✏️ チャレンジ（10もん）</button>
+</section>
+
+<!-- ========== まなぶ ========== -->
+<section id="s-learn" class="screen">
+  <button class="back" onclick="go('stage')">‹ もどる</button>
+  <h2 class="sc" id="learnTitle"></h2>
+  <p class="scsub">よんだら チャレンジしてみよう！</p>
+  <div id="learnBody"></div>
+  <button class="btn" onclick="startQuiz()">✏️ チャレンジしてみる</button>
+</section>
+
+<!-- ========== クイズ ========== -->
+<section id="s-quiz" class="screen">
+  <div class="qbar">
+    <button class="back" style="padding:0 6px 0 0" onclick="quitQuiz()">✕</button>
+    <div class="bar"><i id="qbar"></i></div>
+    <span id="qcount">1/10</span>
+  </div>
+  <div class="qcard">
+    <div class="ja" id="qja"></div>
+    <div class="en" id="qen"></div>
+  </div>
+  <div class="opts" id="qopts"></div>
+  <div id="qjudge"></div>
+</section>
+
+<!-- ========== けっか ========== -->
+<section id="s-result" class="screen">
+  <div class="result">
+    <div class="stars" id="rstars"></div>
+    <div class="score"><span id="rscore">0</span><span style="font-size:24px">/<span id="rmax">10</span></span></div>
+    <div class="msg" id="rmsg"></div>
+    <div class="sm" id="rsub"></div>
+  </div>
+  <button class="btn g" onclick="retrySame()">🔁 もういちど</button>
+  <button class="btn ghost" onclick="go('home')">島マップにもどる</button>
+</section>
+
+<!-- ========== まちがいノート ========== -->
+<section id="s-review" class="screen">
+  <button class="back" onclick="go('home')">‹ 島マップにもどる</button>
+  <h2 class="sc">📕 まちがいノート</h2>
+  <p class="scsub">まちがえた問題だけ あつめてあるよ</p>
+  <div id="reviewBody"></div>
+</section>
+
+</div>
+
+<script>
+/* ===================== データ ===================== */
+const PTABLE=[
+ ["I","my","me","mine","アイ・マイ・ミー・マイン"],
+ ["you","your","you","yours","ユー・ユア・ユー・ユアーズ"],
+ ["he","his","him","his","ヒー・ヒズ・ヒム・ヒズ"],
+ ["she","her","her","hers","シー・ハー・ハー・ハーズ"],
+ ["it","its","it","—","イット・イッツ・イット"],
+ ["we","our","us","ours","ウィー・アワー・アス・アワーズ"],
+ ["they","their","them","theirs","ゼイ・ゼア・ゼム・ゼアーズ"]
+];
+function ptableHTML(){
+  let h='<table class="ptable"><tr><th>〜は</th><th>〜の</th><th>〜を・に</th><th>〜のもの</th></tr>';
+  PTABLE.forEach(r=>{
+    h+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>
+        <tr><td colspan="4" class="kana" style="background:none;padding:0 0 4px">${r[4]}</td></tr>`;
+  });
+  return h+'</table>';
+}
+
+const PRON={id:'p',emo:'🚢',name:'出発の港',sub:'だいめいし（I my me mine）',
+ learn:[
+  {h:"まずは これを 声に出して 7回！",p:[
+    "英語のいちばん大事な土台。<b>リズムでおぼえる</b>のがコツだよ。",
+    "<b>アイ・マイ・ミー・マイン！</b><br><b>ユー・ユア・ユー・ユアーズ！</b><br><b>ヒー・ヒズ・ヒム・ヒズ！</b>",
+    ptableHTML()
+  ]},
+  {h:"4つのならびの いみ",p:[
+    "<span class='chip'>1つめ 〜は</span> 文のはじめの主人公。<b>I</b> am Ken.",
+    "<span class='chip'>2つめ 〜の</span> あとに「もの」がくる。<b>my</b> bag（わたしのかばん）",
+    "<span class='chip'>3つめ 〜を・〜に</span> 動詞のあと。Help <b>me</b>.（わたしをたすけて）",
+    "<span class='chip'>4つめ 〜のもの</span> これ1語で「〜のもの」。That bag is <b>mine</b>."],
+   ex:[["This is my bike. It's mine.","これはわたしの自転車です。わたしのものです。"]]},
+  {h:"まちがえやすい ところ",p:[
+    "<b>her</b> は「かの女の」と「かの女を」の2つの場所でつかう。",
+    "<b>his</b> は「かれの」と「かれのもの」が同じ形。",
+    "my・your のあとには かならず「もの」がつづく。mine・yours のあとには 何もつかない！"],
+   ex:[["Her bag is red. I like her.","かの女のかばんは赤い。わたしはかの女がすきです。"]]}
+ ],
+ qs:[
+  {q:"I – my – ( ) – mine",ja:"表のあなを うめよう",c:["me","mine","my","I"],a:0,t:"アイ・マイ・ミー・マイン！"},
+  {q:"I – ( ) – me – mine",ja:"表のあなを うめよう",c:["my","me","mine","I"],a:0,t:"2つめは「〜の」の my。"},
+  {q:"you – your – you – ( )",ja:"表のあなを うめよう",c:["yours","your","you","yourself"],a:0,t:"ユー・ユア・ユー・ユアーズ！"},
+  {q:"he – ( ) – him – his",ja:"表のあなを うめよう",c:["his","him","he","hers"],a:0,t:"ヒー・ヒズ・ヒム・ヒズ！"},
+  {q:"he – his – ( ) – his",ja:"表のあなを うめよう",c:["him","his","he","them"],a:0,t:"3つめは「〜を」の him。"},
+  {q:"she – her – her – ( )",ja:"表のあなを うめよう",c:["hers","her","she","his"],a:0,t:"シー・ハー・ハー・ハーズ！"},
+  {q:"she – ( ) – her – hers",ja:"表のあなを うめよう",c:["her","hers","she","his"],a:0,t:"she のときは 2つめも3つめも her。"},
+  {q:"we – our – ( ) – ours",ja:"表のあなを うめよう",c:["us","our","we","ours"],a:0,t:"ウィー・アワー・アス・アワーズ！"},
+  {q:"we – ( ) – us – ours",ja:"表のあなを うめよう",c:["our","us","ours","we"],a:0,t:"2つめは「わたしたちの」の our。"},
+  {q:"they – their – ( ) – theirs",ja:"表のあなを うめよう",c:["them","their","they","theirs"],a:0,t:"ゼイ・ゼア・ゼム・ゼアーズ！"},
+  {q:"they – ( ) – them – theirs",ja:"表のあなを うめよう",c:["their","them","they","theirs"],a:0,t:"2つめは「かれらの」の their。"},
+  {q:"it – ( ) – it",ja:"表のあなを うめよう",c:["its","it's","it","his"],a:0,t:"it の「〜の」は its（アポストロフィなし！）。"},
+  {q:"This is ( ) new bag.",ja:"これはわたしの新しいかばんです。",c:["my","I","me","mine"],a:0,t:"あとに bag があるので「〜の」の my。"},
+  {q:"That racket is ( ).",ja:"あのラケットはわたしのものです。",c:["mine","my","me","I"],a:0,t:"1語で「わたしのもの」は mine。"},
+  {q:"Please help ( ).",ja:"わたしをたすけてください。",c:["me","my","I","mine"],a:0,t:"動詞のあとは「〜を」の me。"},
+  {q:"I know ( ) very well.",ja:"わたしはかれをよく知っています。",c:["him","he","his","them"],a:0,t:"know のあとなので him。"},
+  {q:"( ) is my sister.",ja:"かの女はわたしの姉です。",c:["She","Her","Hers","He"],a:0,t:"文のはじめの主人公は She。"},
+  {q:"That is ( ) car.",ja:"あれはかれらの車です。",c:["their","they","them","theirs"],a:0,t:"あとに car があるので their。"},
+  {q:"Look at ( ) over there.",ja:"むこうにいるかの女を見て。",c:["her","she","hers","his"],a:0,t:"at のあとなので her。"},
+  {q:"These books are ( ).",ja:"これらの本はわたしたちのものです。",c:["ours","our","us","we"],a:0,t:"1語で「わたしたちのもの」は ours。"}
+]};
+
+const STAGES=[
+{id:0,emo:"🐬",name:"be動詞の島",sub:"am / is / are",color:"#2BC4D6",
+ learn:[
+  {h:"be動詞ってなに？",p:["「〜です」「〜にいます」を あらわすことば。 <b>am・is・are</b> の3つ。"],
+   ex:[["I am Ken.","わたしはケンです。"],["He is my friend.","かれはわたしの友だちです。"],["We are in the park.","わたしたちは公園にいます。"]]},
+  {h:"つかいわけは かんたん！",p:["<span class='chip'>I → am</span><span class='chip'>You・2人以上 → are</span><span class='chip'>そのほか1人・1つ → is</span>","<b>My parents are teachers.</b> のように、主語が2人以上のときは かならず <span class='hl'>are</span>。"]},
+  {h:"ぎもん文と ひてい文",p:["ぎもん文 → be動詞を 前に出す。","ひてい文 → be動詞の うしろに not。"],
+   ex:[["Are you from Osaka?","あなたは大阪の出身ですか？"],["She is not my sister.","かの女はわたしの姉ではありません。"]]}
+ ],
+ qs:[
+  {q:"I ( ) a junior high school student.",ja:"わたしは中学生です。",c:["am","is","are","be"],a:0,t:"主語が I のときは am。"},
+  {q:"This ( ) my new bag.",ja:"これはわたしの新しいかばんです。",c:["am","is","are","do"],a:1,t:"This は「1つのもの」だから is。"},
+  {q:"My parents ( ) teachers.",ja:"わたしの両親は先生です。",c:["is","am","are","be"],a:2,t:"parents は2人いるので are。"},
+  {q:"Ken and I ( ) good friends.",ja:"ケンとわたしはなかよしです。",c:["am","is","are","do"],a:2,t:"「〜と わたし」は2人なので are。"},
+  {q:"That ( ) an old temple.",ja:"あれは古いお寺です。",c:["are","is","am","be"],a:1,t:"That は1つなので is。"},
+  {q:"You ( ) very kind.",ja:"あなたはとてもやさしいです。",c:["is","am","are","be"],a:2,t:"You には いつも are。"},
+  {q:"My father ( ) a doctor.",ja:"わたしの父は医者です。",c:["are","am","is","do"],a:2,t:"father は1人なので is。"},
+  {q:"We ( ) in the gym now.",ja:"わたしたちは今、体育館にいます。",c:["is","are","am","be"],a:1,t:"We は2人以上なので are。"},
+  {q:"( ) you from Canada?",ja:"あなたはカナダ出身ですか？",c:["Is","Am","Are","Do"],a:2,t:"you のぎもん文は Are を前に出す。"},
+  {q:"It ( ) sunny today.",ja:"今日は晴れです。",c:["are","is","am","be"],a:1,t:"天気の It には is。"},
+  {q:"Tom and Mary ( ) in the classroom.",ja:"トムとメアリーは教室にいます。",c:["is","am","are","be"],a:2,t:"2人なので are。"},
+  {q:"She ( ) not my sister.",ja:"かの女はわたしの姉ではありません。",c:["are","is","am","do"],a:1,t:"She は1人なので is。ひてい文は is not。"}
+]},
+
+{id:1,emo:"🐢",name:"うごきのことばの島",sub:"一般動詞・3人称のs",color:"#4CC38A",
+ learn:[
+  {h:"うごきをあらわすことば",p:["play（する）, go（行く）, like（すき）など、動作や気もちをあらわすことば。"],
+   ex:[["I play soccer every day.","わたしは毎日サッカーをします。"]]},
+  {h:"主語が「1人・1つ」のときは s！",p:["he, she, my father, Ken など <b>じぶんとあいて以外で1人・1つ</b>のときは 動詞に <span class='hl'>s</span> をつける。"],
+   ex:[["He plays soccer.","かれはサッカーをします。"],["My sister likes music.","姉は音楽がすきです。"]]},
+  {h:"s のつけかた 3つのルール",p:["<span class='chip'>ふつう → +s</span> play→plays","<span class='chip'>s,sh,ch,x,o → +es</span> watch→watches / go→goes","<span class='chip'>子音+y → yをiにしてes</span> study→studies","<b>have → has</b> は とくべつ！"]},
+  {h:"ぎもん文・ひてい文",p:["I / You / 2人以上 → <b>Do</b> 〜? / <b>don't</b>","he / she など1人・1つ → <b>Does</b> 〜? / <b>doesn't</b>","※ Does・doesn't のあとの動詞に s はつけない！"],
+   ex:[["Does your brother like music?","お兄さんは音楽がすきですか？"]]}
+ ],
+ qs:[
+  {q:"I ( ) soccer every day.",ja:"わたしは毎日サッカーをします。",c:["play","plays","playing","to play"],a:0,t:"主語が I なので s はつけない。"},
+  {q:"He ( ) TV after dinner.",ja:"かれは夕食のあとテレビを見ます。",c:["watch","watchs","watches","watching"],a:2,t:"ch でおわる語は es をつけて watches。"},
+  {q:"My sister ( ) to school by bus.",ja:"姉はバスで学校へ行きます。",c:["go","gos","goes","going"],a:2,t:"go は goes になる。"},
+  {q:"They ( ) English every day.",ja:"かれらは毎日英語を勉強します。",c:["studies","study","studys","studying"],a:1,t:"They は2人以上なので s はつけない。"},
+  {q:"She ( ) breakfast at seven.",ja:"かの女は7時に朝食を食べます。",c:["have","haves","has","having"],a:2,t:"have は has にかわる。"},
+  {q:"Ken ( ) a nice bike.",ja:"ケンはすてきな自転車を持っています。",c:["have","has","haves","having"],a:1,t:"Ken は1人なので has。"},
+  {q:"I ( ) like natto.",ja:"わたしは納豆がすきではありません。",c:["am not","doesn't","don't","not"],a:2,t:"主語が I のひてい文は don't。"},
+  {q:"My brother ( ) like carrots.",ja:"弟はにんじんがすきではありません。",c:["don't","doesn't","isn't","not"],a:1,t:"brother は1人なので doesn't。"},
+  {q:"( ) you play the piano?",ja:"あなたはピアノをひきますか？",c:["Are","Does","Do","Is"],a:2,t:"you のぎもん文は Do。"},
+  {q:"( ) your mother cook every day?",ja:"お母さんは毎日料理をしますか？",c:["Do","Does","Is","Are"],a:1,t:"mother は1人なので Does。"},
+  {q:"Emi ( ) her homework at six.",ja:"エミは6時に宿題をします。",c:["do","does","doing","is do"],a:1,t:"Emi は1人なので does。"},
+  {q:"Does he ( ) baseball?",ja:"かれは野球をしますか？",c:["plays","played","play","playing"],a:2,t:"Does のあとの動詞は もとの形（s なし）。"}
+]},
+
+{id:2,emo:"🐠",name:"いま〜してる島",sub:"現在進行形",color:"#FF9F5A",
+ learn:[
+  {h:"be動詞 + 動詞ing",p:["「<b>いま〜している</b>ところ」をあらわす言いかた。"],
+   ex:[["He is reading a book.","かれは本を読んでいます。"],["I am eating lunch now.","わたしは今、昼食を食べています。"]]},
+  {h:"ing のつけかた",p:["<span class='chip'>ふつう → +ing</span> play→playing","<span class='chip'>e でおわる → e をとって ing</span> take→taking / drive→driving","<span class='chip'>みじかい音+子音 → さいごの字をかさねる</span> swim→swimming / run→running"]},
+  {h:"ぎもん文・ひてい文",p:["be動詞を前に出せば ぎもん文。うしろに not を入れれば ひてい文。"],
+   ex:[["Is he eating lunch?","かれは昼食を食べていますか？"],["He isn't playing soccer.","かれはサッカーをしていません。"]]}
+ ],
+ qs:[
+  {q:"I ( ) reading a book now.",ja:"わたしは今、本を読んでいます。",c:["am","is","are","do"],a:0,t:"I のときは am + ing。"},
+  {q:"She is ( ) her room now.",ja:"かの女は今、部屋をそうじしています。",c:["clean","cleans","cleaning","cleaned"],a:2,t:"be動詞のあとは 〜ing。"},
+  {q:"My father is ( ) a car.",ja:"父は車を運転しています。",c:["driveing","driving","drives","drive"],a:1,t:"drive は e をとって driving。"},
+  {q:"They are ( ) in the pool.",ja:"かれらはプールで泳いでいます。",c:["swiming","swims","swimming","swim"],a:2,t:"swim は m をかさねて swimming。"},
+  {q:"Look! The baby is ( ).",ja:"見て！赤ちゃんがねむっています。",c:["sleep","sleeps","sleeping","slept"],a:2,t:"be動詞 + ing の形。"},
+  {q:"( ) he eating lunch now?",ja:"かれは今、昼食を食べていますか？",c:["Do","Is","Does","Are"],a:1,t:"進行形のぎもん文は be動詞を前に。he なので Is。"},
+  {q:"We ( ) watching TV now.",ja:"わたしたちは今テレビを見ています。",c:["is","am","are","do"],a:2,t:"We なので are。"},
+  {q:"My mother is ( ) dinner now.",ja:"母は今、夕食を作っています。",c:["make","makes","makeing","making"],a:3,t:"make は e をとって making。"},
+  {q:"Ken is not ( ) soccer now.",ja:"ケンは今サッカーをしていません。",c:["play","plays","playing","played"],a:2,t:"not のあとも ing の形。"},
+  {q:"Look! The birds ( ) singing.",ja:"見て！鳥が歌っています。",c:["is","am","are","do"],a:2,t:"birds は2羽以上なので are。"},
+  {q:"I'm ( ) my homework now.",ja:"わたしは今、宿題をしています。",c:["do","does","doing","did"],a:2,t:"I'm は I am のこと。あとは ing。"},
+  {q:"He is ( ) a letter to his friend.",ja:"かれは友だちに手紙を書いています。",c:["write","writes","writting","writing"],a:3,t:"write は e をとって writing。"}
+]},
+
+{id:3,emo:"🦜",name:"できるよ島",sub:"助動詞 can",color:"#B388FF",
+ learn:[
+  {h:"can =「〜できる」",p:["<b>can + 動詞のもとの形</b> で「〜できる」。動詞に s も ing もつけない！"],
+   ex:[["He can swim fast.","かれは速く泳げます。"],["She can play the guitar.","かの女はギターをひけます。"]]},
+  {h:"できないときは can't",p:["can not をちぢめて <b>can't</b>。"],
+   ex:[["I can't read French.","わたしはフランス語が読めません。"]]},
+  {h:"ぎもん文と こたえかた",p:["Can を文のはじめに出すだけ。"],
+   ex:[["Can you cook curry? — Yes, I can. / No, I can't.","カレーを作れますか？ — はい／いいえ。"]]}
+ ],
+ qs:[
+  {q:"I ( ) swim very fast.",ja:"わたしはとても速く泳げます。",c:["am","can","do","is"],a:1,t:"「〜できる」は can。"},
+  {q:"He can ( ) the guitar.",ja:"かれはギターをひけます。",c:["plays","playing","play","to play"],a:2,t:"can のあとは 動詞のもとの形。"},
+  {q:"( ) you cook curry?",ja:"あなたはカレーを作れますか？",c:["Are","Do","Can","Is"],a:2,t:"「〜できますか」は Can 〜?"},
+  {q:"She ( ) read French.",ja:"かの女はフランス語が読めません。",c:["can't","doesn't can","isn't","not can"],a:0,t:"「できない」は can't。"},
+  {q:"My dog can ( ) very fast.",ja:"わたしの犬はとても速く走れます。",c:["runs","running","ran","run"],a:3,t:"can のあとは もとの形 run。"},
+  {q:"Can Ken ( ) English?",ja:"ケンは英語を話せますか？",c:["speaks","speak","speaking","spoke"],a:1,t:"Can のあとも もとの形。"},
+  {q:"— Can you ski?  — Yes, I ( ).",ja:"スキーできる？ — うん、できるよ。",c:["do","am","can","can't"],a:2,t:"Can できかれたら can でこたえる。"},
+  {q:"Birds can ( ) in the sky.",ja:"鳥は空を飛べます。",c:["flies","flying","fly","flew"],a:2,t:"can + fly（もとの形）。"},
+  {q:"— Can she play tennis?  — No, she ( ).",ja:"かの女はテニスができますか？ — いいえ。",c:["doesn't","isn't","can't","don't"],a:2,t:"No のときは can't。"},
+  {q:"We can ( ) Mt. Fuji from here.",ja:"ここから富士山が見えます。",c:["see","sees","seeing","saw"],a:0,t:"can + see。"},
+  {q:"You can ( ) my pencil.",ja:"わたしのえんぴつを使っていいよ。",c:["uses","using","use","used"],a:2,t:"can + use。"},
+  {q:"I can't ( ) up early.",ja:"わたしは早く起きられません。",c:["gets","get","getting","got"],a:1,t:"can't のあとも もとの形。"}
+]},
+
+{id:4,emo:"🔍",name:"しつもんの島",sub:"疑問詞（5W1H）",color:"#FF6FA5",
+ learn:[
+  {h:"6つのしつもんことば",p:["<span class='chip'>what なに</span><span class='chip'>where どこ</span><span class='chip'>when いつ</span><span class='chip'>who だれ</span><span class='chip'>which どっち</span><span class='chip'>how どうやって</span>"],
+   ex:[["Where do you live? — In Osaka.","どこに住んでいますか？ — 大阪です。"]]},
+  {h:"2語でつかう すごい形",p:["<b>how old</b> 何さい / <b>how many</b> いくつ / <b>how much</b> いくら / <b>what time</b> 何時 / <b>whose</b> だれの"],
+   ex:[["How old are you? — I'm eleven.","何さいですか？ — 11さいです。"],["What time do you get up? — At six.","何時に起きますか？ — 6時です。"]]},
+  {h:"こたえかたのコツ",p:["こたえの文を見れば しつもんことばが わかる！ 場所でこたえていたら where、時間なら when や what time。"]}
+ ],
+ qs:[
+  {q:"( ) is your name? — My name is Ken.",ja:"名前は何ですか？",c:["Who","What","Where","How"],a:1,t:"名前をきくときは What。"},
+  {q:"( ) do you live? — In Osaka.",ja:"どこに住んでいますか？",c:["When","What","Where","Who"],a:2,t:"場所でこたえているので Where。"},
+  {q:"( ) is your birthday? — May 5th.",ja:"たん生日はいつですか？",c:["When","Where","Who","Which"],a:0,t:"日づけでこたえているので When。"},
+  {q:"( ) is that girl? — She is my sister.",ja:"あの女の子はだれですか？",c:["What","Whose","Who","How"],a:2,t:"人をきくときは Who。"},
+  {q:"( ) old are you? — I'm twelve.",ja:"何さいですか？",c:["What","How","Who","When"],a:1,t:"年れいは How old。"},
+  {q:"( ) many books do you have?",ja:"本を何さつ持っていますか？",c:["What","Which","How","Who"],a:2,t:"数をきくときは How many。"},
+  {q:"( ) time do you go to bed? — At nine.",ja:"何時にねますか？",c:["How","What","When","Where"],a:1,t:"「何時」は What time。"},
+  {q:"( ) do you go to school? — By bus.",ja:"どうやって学校に行きますか？",c:["What","Where","How","Who"],a:2,t:"方法をきくときは How。"},
+  {q:"( ) is your favorite color? — Blue.",ja:"すきな色は何ですか？",c:["Who","What","Where","When"],a:1,t:"ものをきくときは What。"},
+  {q:"( ) is my cap? — It's on the desk.",ja:"わたしのぼうしはどこですか？",c:["What","How","Where","Which"],a:2,t:"場所なので Where。"},
+  {q:"( ) do you like, tea or coffee?",ja:"紅茶とコーヒー、どっちがすき？",c:["Which","Who","When","How"],a:0,t:"2つからえらぶときは Which。"},
+  {q:"( ) bag is this? — It's mine.",ja:"これはだれのかばん？ — わたしのです。",c:["Who","Whose","Which","What"],a:1,t:"「だれの」は Whose。"}
+]},
+
+{id:5,emo:"🗺️",name:"ばしょと時間の島",sub:"前置詞",color:"#F4A63C",
+ learn:[
+  {h:"ばしょをあらわすことば",p:["<span class='chip'>in 〜の中</span><span class='chip'>on 〜の上（くっつく）</span><span class='chip'>under 〜の下</span><span class='chip'>by 〜のそば</span><span class='chip'>near 〜の近く</span><span class='chip'>at 〜で</span><span class='chip'>to 〜へ</span><span class='chip'>from 〜から</span>"],
+   ex:[["The cat is under the table.","ねこはテーブルの下にいます。"]]},
+  {h:"時間をあらわすことば",p:["<b>in</b> → 月・季節・年（in May）","<b>on</b> → 曜日・日づけ（on Monday）","<b>at</b> → 時こく（at six）","大きい順に in ＞ on ＞ at とおぼえよう！"]},
+  {h:"そのほか よく出るもの",p:["<b>with</b> 〜といっしょに / <b>for</b> 〜のために"],
+   ex:[["I play tennis with my friends.","友だちとテニスをします。"]]}
+ ],
+ qs:[
+  {q:"The cat is ( ) the box.",ja:"ねこは箱の中にいます。",c:["on","in","under","to"],a:1,t:"「中」は in。"},
+  {q:"The book is ( ) the desk.",ja:"本はつくえの上にあります。",c:["in","under","on","at"],a:2,t:"くっついている「上」は on。"},
+  {q:"My ball is ( ) the bed.",ja:"ボールはベッドの下にあります。",c:["under","on","in","by"],a:0,t:"「下」は under。"},
+  {q:"I have piano lessons ( ) Monday.",ja:"月曜日にピアノのレッスンがあります。",c:["in","at","on","to"],a:2,t:"曜日には on。"},
+  {q:"My birthday is ( ) July.",ja:"わたしのたん生日は7月です。",c:["on","in","at","for"],a:1,t:"月には in。"},
+  {q:"I get up ( ) six every morning.",ja:"毎朝6時に起きます。",c:["on","in","at","to"],a:2,t:"時こくには at。"},
+  {q:"My grandmother lives ( ) Osaka.",ja:"おばあちゃんは大阪に住んでいます。",c:["at","in","on","to"],a:1,t:"広い場所（市・国）には in。"},
+  {q:"I play tennis ( ) my friends.",ja:"友だちとテニスをします。",c:["for","to","with","by"],a:2,t:"「〜といっしょに」は with。"},
+  {q:"Let's meet ( ) the station.",ja:"駅で会おうよ。",c:["at","in","on","under"],a:0,t:"待ち合わせの地点には at。"},
+  {q:"This present is ( ) you.",ja:"このプレゼントはあなたのためのものです。",c:["with","for","by","to"],a:1,t:"「〜のために」は for。"},
+  {q:"There is a picture ( ) the wall.",ja:"かべに絵がかかっています。",c:["in","at","on","under"],a:2,t:"かべに「くっついている」ので on。"},
+  {q:"I go ( ) the library after school.",ja:"放課後、図書館へ行きます。",c:["to","in","at","for"],a:0,t:"「〜へ」は to。"}
+]},
+
+{id:6,emo:"🍎",name:"ふえるふえる島",sub:"名詞の複数形",color:"#66C4A6",
+ learn:[
+  {h:"2つ以上には s をつける",p:["one apple → two <b>apples</b> のように、2つ以上のときは s。"]},
+  {h:"とくべつな つけかた",p:["<span class='chip'>s,sh,ch,x → +es</span> bus→buses / dish→dishes / church→churches / box→boxes","<span class='chip'>子音+o → +es</span> tomato→tomatoes / potato→potatoes","<span class='chip'>子音+y → yをiにして es</span> city→cities / baby→babies","<span class='chip'>f,fe → ves</span> leaf→leaves / knife→knives"]},
+  {h:"形がガラッとかわるもの",p:["child → <b>children</b> / man → <b>men</b> / woman → <b>women</b> / foot → <b>feet</b>","※ 数えられない water や milk には s をつけない。"]}
+ ],
+ qs:[
+  {q:"I have two ( ) in my room.",ja:"部屋に箱が2つあります。",c:["boxs","boxes","box","boxies"],a:1,t:"x でおわる語は es をつける。"},
+  {q:"There are three big ( ) in Japan.",ja:"日本には大きな都市が3つあります。",c:["citys","cityes","cities","citis"],a:2,t:"子音+y は y を i にして es。"},
+  {q:"My mother buys five ( ).",ja:"母はトマトを5つ買います。",c:["tomatos","tomatoes","tomato","tomatoies"],a:1,t:"子音+o は es をつける。"},
+  {q:"Please wash the ( ).",ja:"お皿をあらってください。",c:["dishs","dishies","dishes","dish"],a:2,t:"sh でおわる語は es。"},
+  {q:"Two ( ) are at the bus stop.",ja:"バス停にバスが2台います。",c:["bus","buss","busies","buses"],a:3,t:"s でおわる語は es。"},
+  {q:"I have three ( ).",ja:"うで時計を3つ持っています。",c:["watchs","watches","watchies","watch"],a:1,t:"ch でおわる語は es。"},
+  {q:"Look at those cute ( )!",ja:"あのかわいい赤ちゃんたちを見て！",c:["babys","babyes","babies","baby"],a:2,t:"子音+y は ies。"},
+  {q:"The ( ) are red in fall.",ja:"秋には葉っぱが赤くなります。",c:["leafs","leaves","leafes","leaf"],a:1,t:"f でおわる語は ves。"},
+  {q:"Three ( ) are playing in the park.",ja:"3人の子どもが公園であそんでいます。",c:["childs","childrens","children","childes"],a:2,t:"child のふくすう形は children。"},
+  {q:"Two ( ) are running over there.",ja:"むこうで男の人が2人走っています。",c:["mans","mens","men","manes"],a:2,t:"man のふくすう形は men。"},
+  {q:"I need two ( ) to cut the cake.",ja:"ケーキを切るのにナイフが2本いります。",c:["knifes","knives","knifs","knife"],a:1,t:"fe でおわる語は ves。"},
+  {q:"I have many ( ) in my bag.",ja:"かばんにたくさんの本が入っています。",c:["book","bookes","bookies","books"],a:3,t:"ふつうは s をつけるだけ。"}
+]},
+
+{id:7,emo:"⛵",name:"さいごの島",sub:"頻度の語・命令文・Let's",color:"#FFD166",
+ learn:[
+  {h:"どれくらいの回数？",p:["<span class='chip'>always いつも</span><span class='chip'>usually たいてい</span><span class='chip'>often よく</span><span class='chip'>sometimes ときどき</span>","おく場所は <b>一般動詞の前</b>／<b>be動詞のうしろ</b>。"],
+   ex:[["I always get up at six.","わたしはいつも6時に起きます。"],["He is often busy.","かれはよくいそがしいです。"]]},
+  {h:"命令文（〜しなさい）",p:["主語をはぶいて、<b>動詞のもとの形</b>ではじめる。","be動詞のときは <b>Be</b> ではじめる。"],
+   ex:[["Stand up, please.","立ってください。"],["Be quiet in the library.","図書館では静かにしなさい。"]]},
+  {h:"Don't と Let's",p:["<b>Don't 〜.</b> 〜してはいけません","<b>Let's 〜.</b> 〜しようよ（あとは 動詞のもとの形）"],
+   ex:[["Don't run in the room.","部屋の中で走ってはいけません。"],["Let's play tennis!","テニスをしようよ！"]]}
+ ],
+ qs:[
+  {q:"I ( ) get up at six.",ja:"わたしはいつも6時に起きます。",c:["always","very","many","much"],a:0,t:"「いつも」は always。"},
+  {q:"My brother ( ) reads comic books.",ja:"兄はよくマンガを読みます。",c:["often","much","very","too"],a:0,t:"「よく・しばしば」は often。"},
+  {q:"I ( ) go to the library on Sunday.",ja:"日曜日はときどき図書館へ行きます。",c:["always","sometimes","very","never mind"],a:1,t:"「ときどき」は sometimes。"},
+  {q:"She ( ) walks to school.",ja:"かの女はたいてい歩いて学校へ行きます。",c:["usually","much","very","many"],a:0,t:"「たいてい」は usually。"},
+  {q:"( ) up, please.",ja:"立ってください。",c:["Stands","Standing","Stand","To stand"],a:2,t:"命令文は 動詞のもとの形ではじめる。"},
+  {q:"( ) quiet in the library.",ja:"図書館では静かにしなさい。",c:["Are","Is","Be","Do"],a:2,t:"be動詞の命令文は Be ではじめる。"},
+  {q:"( ) run in the classroom.",ja:"教室で走ってはいけません。",c:["Not","Don't","Doesn't","No"],a:1,t:"「〜するな」は Don't。"},
+  {q:"( ) play tennis, Dad.",ja:"テニスをしようよ、お父さん。",c:["Let's","Do","Are","Be"],a:0,t:"「〜しようよ」は Let's。"},
+  {q:"Please ( ) the door.",ja:"ドアを開けてください。",c:["opens","opening","open","opened"],a:2,t:"Please のあとも 動詞のもとの形。"},
+  {q:"Let's ( ) shopping this afternoon.",ja:"午後、買い物に行こうよ。",c:["goes","going","go","went"],a:2,t:"Let's のあとは もとの形 go。"},
+  {q:"( ) your name and age here.",ja:"ここに名前と年れいを書いて。",c:["Writes","Write","Writing","Wrote"],a:1,t:"命令文なので Write。"},
+  {q:"Don't ( ) in this river.",ja:"この川で泳いではいけません。",c:["swims","swimming","swim","swam"],a:2,t:"Don't のあとも もとの形。"}
+]}
+];
+
+/* ===================== ほぞん ===================== */
+const KEY='eiken5_grammar_island_v1';
+let mem={best:{},wrong:[]};
+function load(){try{const s=localStorage.getItem(KEY);if(s)mem=JSON.parse(s);}catch(e){}
+  if(!mem.best)mem.best={}; if(!mem.wrong)mem.wrong=[];}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(mem));}catch(e){}}
+
+/* ===================== 音 ===================== */
+let actx=null;
+function tone(f,d,t,v){try{
+  if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended')actx.resume();
+  const o=actx.createOscillator(),g=actx.createGain();
+  o.type=t||'sine';o.frequency.value=f;
+  g.gain.setValueAtTime(0,actx.currentTime);
+  g.gain.linearRampToValueAtTime(v||.16,actx.currentTime+.01);
+  g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+d);
+  o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+d);
+}catch(e){}}
+function sOK(){tone(784,.12,'triangle');setTimeout(()=>tone(1046,.22,'triangle'),90);}
+function sNG(){tone(220,.28,'sawtooth',.10);}
+function sTap(){tone(560,.06,'sine',.08);}
+function sWin(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,.28,'triangle'),i*110));}
+document.addEventListener('touchstart',function u(){tone(1,.01,'sine',.001);document.removeEventListener('touchstart',u);},{passive:true});
+
+/* ===================== がめん ===================== */
+function go(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-'+n).classList.add('on');
+  window.scrollTo(0,0);
+}
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+/* ===================== マップ ===================== */
+function portDone(){return (mem.best['p']||0)>=9||mem.skip===true;}
+function drawMap(){
+  const pb=mem.best['p']||0;
+  const pst=pb>=12?'★★★':pb>=10?'★★☆':pb>=8?'★☆☆':'☆☆☆';
+  const pEl=document.getElementById('portStar');
+  pEl.textContent=pst;pEl.className='st'+(pb>0?' got':'');
+  document.getElementById('portNote').textContent=
+    portDone()?'港はクリアずみ！ いつでも復習できるよ 🔁':'港をクリアすると 8つの島がひらくよ 🔓';
+  const open=portDone();
+  let h='';
+  STAGES.forEach((s,i)=>{
+    const b=mem.best[s.id]||0;
+    const st=b>=10?'★★★':b>=8?'★★☆':b>=5?'★☆☆':'☆☆☆';
+    h+=`<button class="island ${i%2?'right':''} ${open?'':'lock'}" onclick="openStage(${s.id})">
+      <span class="num">島 ${i+1}</span>
+      <span class="emo">${open?s.emo:'🔒'}</span>
+      <span class="tt"><b>${s.name}</b><span>${s.sub}</span></span>
+      <span class="st ${b>0?'got':''}">${st}</span></button>`;
+    if(i<STAGES.length-1)h+=`<div class="path"><i></i><i></i><i></i></div>`;
+  });
+  document.getElementById('map').innerHTML=h;
+  let got=0;STAGES.forEach(s=>got+=(mem.best[s.id]||0));
+  const pct=Math.round(got/(STAGES.length*10)*100);
+  document.getElementById('allbar').style.width=pct+'%';
+  document.getElementById('allpct').textContent=pct+'%';
+  document.getElementById('wrongcount').textContent=mem.wrong.length;
+}
+
+/* ===================== ステージ ===================== */
+let cur=null;
+function head(label,obj,max){
+  const b=mem.best[obj.id]||0;
+  document.getElementById('stageHead').innerHTML=
+    `<h3 style="font-size:14px;margin-bottom:4px">${label}</h3>
+     <p style="font-size:24px;font-weight:800;margin:0">${obj.emo} ${obj.name}</p>
+     <p style="color:#6a8590;margin:2px 0 8px">${obj.sub}</p>
+     <p style="font-size:14px">これまでのベスト：<b>${b} / ${max}</b></p>`;
+}
+function openPort(){sTap();cur=PRON;head('スタート地点',PRON,12);go('stage');}
+function openStage(id){
+  if(!portDone()){
+    sNG();
+    alert('まずは 🚢 出発の港で「I my me mine」をおぼえよう！\n12もん中 9もん 正かいすると 島がひらきます。');
+    return;
+  }
+  sTap();cur=STAGES[id];
+  head('島 '+(id+1),cur,10);
+  go('stage');
+}
+function skipPort(){
+  if(confirm('港をとばして 島へすすみますか？（あとから港にもどれます）')){
+    mem.skip=true;save();drawMap();
+  }
+}
+function startLearn(){
+  sTap();
+  document.getElementById('learnTitle').textContent=cur.emo+' '+cur.name;
+  let h='';
+  cur.learn.forEach(c=>{
+    h+=`<div class="card"><h3>${c.h}</h3>`;
+    (c.p||[]).forEach(p=>h+=`<div class="ln">${p}</div>`);
+    (c.ex||[]).forEach(e=>h+=`<div class="ex"><b>${esc(e[0])}</b><span>${e[1]}</span></div>`);
+    h+='</div>';
+  });
+  document.getElementById('learnBody').innerHTML=h;
+  go('learn');
+}
+
+/* ===================== クイズ ===================== */
+let quiz=[],qi=0,score=0,mode='stage',locked=false;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function pack(q,sid){return {q:q.q,ja:q.ja,c:q.c,a:q.a,t:q.t,sid:sid};}
+
+function startQuiz(){
+  sTap();mode='stage';
+  quiz=shuffle(cur.qs.map(q=>pack(q,cur.id))).slice(0,cur.id==='p'?12:10);
+  runQuiz();
+}
+function startMix(){
+  sTap();mode='mix';
+  let all=[];[PRON].concat(STAGES).forEach(s=>s.qs.forEach(q=>all.push(pack(q,s.id))));
+  quiz=shuffle(all).slice(0,20);
+  runQuiz();
+}
+function startWrong(){
+  sTap();mode='wrong';
+  quiz=shuffle(mem.wrong).slice(0,Math.min(20,mem.wrong.length));
+  runQuiz();
+}
+function runQuiz(){qi=0;score=0;go('quiz');showQ();}
+function quitQuiz(){sTap();go('home');drawMap();}
+
+function showQ(){
+  locked=false;
+  const q=quiz[qi];
+  document.getElementById('qbar').style.width=(qi/quiz.length*100)+'%';
+  document.getElementById('qcount').textContent=(qi+1)+'/'+quiz.length;
+  document.getElementById('qja').textContent=q.ja;
+  document.getElementById('qen').innerHTML=esc(q.q).replace('( )','<u>(　　)</u>');
+  const order=shuffle(q.c.map((t,i)=>({t:t,i:i})));
+  q._order=order;
+  document.getElementById('qopts').innerHTML=order.map((o,n)=>
+    `<button class="opt" id="o${n}" onclick="pick(${n})">${esc(o.t)}</button>`).join('');
+  document.getElementById('qjudge').innerHTML='';
+}
+
+function pick(n){
+  if(locked)return;locked=true;
+  const q=quiz[qi];
+  const chosen=q._order[n];
+  const ok=chosen.i===q.a;
+  q._order.forEach((o,k)=>{
+    const el=document.getElementById('o'+k);
+    if(o.i===q.a)el.classList.add('ok');
+    else if(k===n)el.classList.add('ng');
+    else el.classList.add('dim');
+  });
+  const praise=['さすが！','ばっちり！','その調子！','かんぺき！','やるね！'];
+  let h;
+  if(ok){
+    score++;sOK();
+    h=`<div class="judge y"><b>⭕️ ${praise[Math.floor(Math.random()*praise.length)]}</b>
+       <p>${q.t}</p></div>`;
+    removeWrong(q);
+  }else{
+    sNG();
+    h=`<div class="judge n"><b>❌ おしい！</b>
+       <p class="ans">こたえ：${esc(q.c[q.a])}</p><p>${q.t}</p></div>`;
+    addWrong(q);
+  }
+  document.getElementById('qjudge').innerHTML=h+
+    `<button class="btn y" onclick="next()">${qi+1<quiz.length?'つぎの問題 ›':'けっかを見る 🎉'}</button>`;
+  document.getElementById('qjudge').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function addWrong(q){
+  if(!mem.wrong.some(w=>w.q===q.q))mem.wrong.push({q:q.q,ja:q.ja,c:q.c,a:q.a,t:q.t,sid:q.sid});
+  save();
+}
+function removeWrong(q){
+  const n=mem.wrong.length;
+  mem.wrong=mem.wrong.filter(w=>w.q!==q.q);
+  if(mem.wrong.length!==n)save();
+}
+function next(){
+  sTap();qi++;
+  if(qi<quiz.length){showQ();window.scrollTo(0,0);}
+  else finish();
+}
+function finish(){
+  const max=quiz.length,pct=score/max;
+  let stars=pct>=.9?3:pct>=.7?2:pct>=.5?1:0;
+  document.getElementById('rstars').textContent='★★★'.slice(0,stars)+'☆☆☆'.slice(0,3-stars);
+  document.getElementById('rscore').textContent=score;
+  document.getElementById('rmax').textContent=max;
+  const msg=stars===3?'パーフェクトに近い！ 島クリア！':stars===2?'いいね！ あと少しで満点！':stars===1?'その調子、もう1回チャレンジ！':'まずは「まなぶ」を読んでみよう！';
+  document.getElementById('rmsg').textContent=msg;
+  document.getElementById('rsub').textContent=
+    mode==='stage'?('『'+cur.name+'』のけっか'):mode==='mix'?'ぜんぶミックステスト':'まちがいノート';
+  if(mode==='stage'){
+    const b=mem.best[cur.id]||0;
+    if(score>b){mem.best[cur.id]=score;save();}
+  }
+  if(stars>=2)sWin();else tone(392,.3,'triangle');
+  drawMap();go('result');
+}
+function retrySame(){
+  sTap();
+  if(mode==='stage')startQuiz();
+  else if(mode==='mix')startMix();
+  else if(mem.wrong.length)startWrong();else openReview();
+}
+
+/* ===================== まちがいノート ===================== */
+function openReview(){
+  sTap();
+  const b=document.getElementById('reviewBody');
+  if(!mem.wrong.length){
+    b.innerHTML=`<div class="empty">まだ まちがいはありません。<br>クイズでまちがえた問題が ここにたまります。</div>
+      <button class="btn ghost" onclick="go('home')">島マップにもどる</button>`;
+  }else{
+    let h=`<button class="btn" onclick="startWrong()">🔁 まちがいだけ もういちど（${mem.wrong.length}もん）</button>`;
+    mem.wrong.forEach(w=>{
+      h+=`<div class="card"><p style="font-family:Verdana,sans-serif;font-weight:700;font-size:17px">${esc(w.q).replace('( )','<span style="color:#FF7A6B">(　　)</span>')}</p>
+      <p style="color:#6a8590;font-size:13px">${w.ja}</p>
+      <p style="font-size:15px">こたえ：<b style="color:#2E9265;font-family:Verdana,sans-serif">${esc(w.c[w.a])}</b></p>
+      <p style="font-size:13px;color:#5e7c85">${w.t}</p></div>`;
+    });
+    b.innerHTML=h;
+  }
+  go('review');
+}
+
+/* ===================== リセット ===================== */
+function resetAll(){
+  if(confirm('ぜんぶの きろく（★ と まちがいノート）を けしますか？')){
+    mem={best:{},wrong:[],skip:false};save();drawMap();
+  }
+}
+
+load();drawMap();
+</script>
+</body>
+</html>
