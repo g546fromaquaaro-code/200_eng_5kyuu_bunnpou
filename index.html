@@ -112,6 +112,13 @@ body{
   box-shadow:0 6px 0 rgba(0,0,0,.15);
 }
 .card h3{margin:0 0 10px;font-size:17px;color:var(--sea);}
+.ill{display:block;width:100%;max-width:320px;margin:2px auto 10px;}
+.tip{
+  background:linear-gradient(160deg,#FFF3D0,#FFE2A8);border-radius:16px;
+  padding:11px 14px;margin:10px 0 4px;border-left:6px solid var(--sun);
+}
+.tip b{display:block;font-size:12px;color:#a97a06;letter-spacing:.1em;margin-bottom:3px;}
+.tip span{font-size:16px;font-weight:800;color:#6b4c00;line-height:1.6;}
 .card p,.card .ln{margin:6px 0;font-size:15px;line-height:1.7;}
 .ex{background:#EAF7FA;border-radius:14px;padding:10px 12px;margin:8px 0;}
 .ex b{display:block;font-size:16px;color:#0d5a6b;letter-spacing:.01em;}
@@ -220,13 +227,13 @@ p.scsub{color:#bfe6ee;font-size:13px;margin:0 0 12px;}
     <span class="chant">I - my - me - mine / You - your - you - yours ...</span>
     <span class="st" id="portStar">☆☆☆</span>
   </button>
-  <p class="note" id="portNote" style="padding:10px 0 0">港をクリアすると 8つの島がひらくよ 🔓</p>
+  <p class="note" id="portNote" style="padding:10px 0 0">港をクリアすると 10の島がひらくよ 🔓</p>
 
   <div class="map" id="map"></div>
 
   <button class="btn y" onclick="startMix()">🏆 ぜんぶミックステスト（20もん）</button>
   <button class="btn ghost" onclick="openReview()">📕 まちがいノート（<span id="wrongcount">0</span>）</button>
-  <p class="note">8つの島をぜんぶクリアしたら 英検5級の文法マスター！</p>
+  <p class="note">英検5級に出る文法は この10個だけ！ ぜんぶクリアで合格レベル</p>
   <button class="btn ghost" onclick="skipPort()">港をとばして 島へすすむ</button>
   <button class="btn ghost" onclick="resetAll()">きろくをリセット</button>
 </section>
@@ -348,131 +355,394 @@ const PRON={id:'p',emo:'🚢',name:'出発の港',sub:'だいめいし（I my me
 ]};
 
 const STAGES=[
-{id:0,emo:"🐬",name:"be動詞の島",sub:"am / is / are",color:"#2BC4D6",
+
+/* ---------- 1 be動詞 ---------- */
+{id:0,emo:"🐬",name:"be動詞の島",sub:"am / is / are",
  learn:[
-  {h:"be動詞ってなに？",p:["「〜です」「〜にいます」を あらわすことば。 <b>am・is・are</b> の3つ。"],
-   ex:[["I am Ken.","わたしはケンです。"],["He is my friend.","かれはわたしの友だちです。"],["We are in the park.","わたしたちは公園にいます。"]]},
-  {h:"つかいわけは かんたん！",p:["<span class='chip'>I → am</span><span class='chip'>You・2人以上 → are</span><span class='chip'>そのほか1人・1つ → is</span>","<b>My parents are teachers.</b> のように、主語が2人以上のときは かならず <span class='hl'>are</span>。"]},
-  {h:"ぎもん文と ひてい文",p:["ぎもん文 → be動詞を 前に出す。","ひてい文 → be動詞の うしろに not。"],
-   ex:[["Are you from Osaka?","あなたは大阪の出身ですか？"],["She is not my sister.","かの女はわたしの姉ではありません。"]]}
+  {h:"be動詞は「＝（イコール）」",
+   svg:`<svg class="ill" viewBox="0 0 320 96" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="6" width="312" height="84" rx="16" fill="#EAF7FA"/>
+<rect x="20" y="30" width="66" height="36" rx="18" fill="#1B7F94"/><text x="53" y="54" fill="#fff" font-size="17" text-anchor="middle">I</text>
+<rect x="98" y="30" width="60" height="36" rx="18" fill="#FF7A6B"/><text x="128" y="54" fill="#fff" font-size="16" text-anchor="middle">am</text>
+<text x="176" y="56" font-size="26" fill="#7fa3ad" text-anchor="middle">＝</text>
+<rect x="200" y="30" width="100" height="36" rx="18" fill="#4CC38A"/><text x="250" y="54" fill="#fff" font-size="15" text-anchor="middle">a student</text>
+<text x="160" y="22" font-size="11" fill="#5e7c85" font-family="sans-serif" text-anchor="middle">be動詞は 左と右を イコールでつなぐ</text></svg>`,
+   p:["「〜です」「〜にいます」をあらわす、<b>am・is・are</b> の3つ。"],
+   ex:[["I am Ken.","わたしはケンです。"],["He is my friend.","かれはわたしの友だちです。"]]},
+
+  {h:"主語で かたちがかわる",
+   svg:`<svg class="ill" viewBox="0 0 320 152" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="144" rx="16" fill="#FFFDF5" stroke="#dfeef2" stroke-width="2"/>
+<rect x="16" y="14" width="130" height="34" rx="17" fill="#2BC4D6"/><text x="81" y="37" fill="#fff" font-size="16" text-anchor="middle">I</text>
+<text x="160" y="37" font-size="18" fill="#9ab" text-anchor="middle">→</text>
+<rect x="180" y="14" width="120" height="34" rx="17" fill="#FF7A6B"/><text x="240" y="37" fill="#fff" font-size="16" text-anchor="middle">am</text>
+<rect x="16" y="58" width="130" height="34" rx="17" fill="#2BC4D6"/><text x="81" y="80" fill="#fff" font-size="13" text-anchor="middle">You / We / They</text>
+<text x="160" y="81" font-size="18" fill="#9ab" text-anchor="middle">→</text>
+<rect x="180" y="58" width="120" height="34" rx="17" fill="#FF7A6B"/><text x="240" y="81" fill="#fff" font-size="16" text-anchor="middle">are</text>
+<rect x="16" y="102" width="130" height="34" rx="17" fill="#2BC4D6"/><text x="81" y="124" fill="#fff" font-size="13" text-anchor="middle">He / She / It / Ken</text>
+<text x="160" y="125" font-size="18" fill="#9ab" text-anchor="middle">→</text>
+<rect x="180" y="102" width="120" height="34" rx="17" fill="#FF7A6B"/><text x="240" y="125" fill="#fff" font-size="16" text-anchor="middle">is</text></svg>`,
+   p:["2人以上（parents, we, they）は かならず <span class='hl'>are</span>。"],
+   tip:"アイ・アム／ユー・アー／のこりは・イズ！",
+   ex:[["My parents are teachers.","わたしの両親は先生です。"]]}
  ],
  qs:[
-  {q:"I ( ) a junior high school student.",ja:"わたしは中学生です。",c:["am","is","are","be"],a:0,t:"主語が I のときは am。"},
-  {q:"This ( ) my new bag.",ja:"これはわたしの新しいかばんです。",c:["am","is","are","do"],a:1,t:"This は「1つのもの」だから is。"},
-  {q:"My parents ( ) teachers.",ja:"わたしの両親は先生です。",c:["is","am","are","be"],a:2,t:"parents は2人いるので are。"},
-  {q:"Ken and I ( ) good friends.",ja:"ケンとわたしはなかよしです。",c:["am","is","are","do"],a:2,t:"「〜と わたし」は2人なので are。"},
+  {q:"I ( ) a junior high school student.",ja:"わたしは中学生です。",c:["am","is","are","be"],a:0,t:"I のときは am。"},
+  {q:"This ( ) my new bag.",ja:"これはわたしの新しいかばんです。",c:["am","is","are","do"],a:1,t:"This は1つなので is。"},
+  {q:"My parents ( ) teachers.",ja:"わたしの両親は先生です。",c:["is","am","are","be"],a:2,t:"parents は2人なので are。"},
+  {q:"Ken and I ( ) good friends.",ja:"ケンとわたしはなかよしです。",c:["am","is","are","do"],a:2,t:"「〜とわたし」で2人。are。"},
   {q:"That ( ) an old temple.",ja:"あれは古いお寺です。",c:["are","is","am","be"],a:1,t:"That は1つなので is。"},
   {q:"You ( ) very kind.",ja:"あなたはとてもやさしいです。",c:["is","am","are","be"],a:2,t:"You には いつも are。"},
   {q:"My father ( ) a doctor.",ja:"わたしの父は医者です。",c:["are","am","is","do"],a:2,t:"father は1人なので is。"},
   {q:"We ( ) in the gym now.",ja:"わたしたちは今、体育館にいます。",c:["is","are","am","be"],a:1,t:"We は2人以上なので are。"},
-  {q:"( ) you from Canada?",ja:"あなたはカナダ出身ですか？",c:["Is","Am","Are","Do"],a:2,t:"you のぎもん文は Are を前に出す。"},
   {q:"It ( ) sunny today.",ja:"今日は晴れです。",c:["are","is","am","be"],a:1,t:"天気の It には is。"},
-  {q:"Tom and Mary ( ) in the classroom.",ja:"トムとメアリーは教室にいます。",c:["is","am","are","be"],a:2,t:"2人なので are。"},
-  {q:"She ( ) not my sister.",ja:"かの女はわたしの姉ではありません。",c:["are","is","am","do"],a:1,t:"She は1人なので is。ひてい文は is not。"}
+  {q:"Tom and Mary ( ) in the classroom.",ja:"トムとメアリーは教室にいます。",c:["is","am","are","be"],a:2,t:"2人なので are。"}
 ]},
 
-{id:1,emo:"🐢",name:"うごきのことばの島",sub:"一般動詞・3人称のs",color:"#4CC38A",
+/* ---------- 2 一般動詞 ---------- */
+{id:1,emo:"🐢",name:"うごきのことばの島",sub:"一般動詞",
  learn:[
-  {h:"うごきをあらわすことば",p:["play（する）, go（行く）, like（すき）など、動作や気もちをあらわすことば。"],
-   ex:[["I play soccer every day.","わたしは毎日サッカーをします。"]]},
-  {h:"主語が「1人・1つ」のときは s！",p:["he, she, my father, Ken など <b>じぶんとあいて以外で1人・1つ</b>のときは 動詞に <span class='hl'>s</span> をつける。"],
-   ex:[["He plays soccer.","かれはサッカーをします。"],["My sister likes music.","姉は音楽がすきです。"]]},
-  {h:"s のつけかた 3つのルール",p:["<span class='chip'>ふつう → +s</span> play→plays","<span class='chip'>s,sh,ch,x,o → +es</span> watch→watches / go→goes","<span class='chip'>子音+y → yをiにしてes</span> study→studies","<b>have → has</b> は とくべつ！"]},
-  {h:"ぎもん文・ひてい文",p:["I / You / 2人以上 → <b>Do</b> 〜? / <b>don't</b>","he / she など1人・1つ → <b>Does</b> 〜? / <b>doesn't</b>","※ Does・doesn't のあとの動詞に s はつけない！"],
-   ex:[["Does your brother like music?","お兄さんは音楽がすきですか？"]]}
+  {h:"動きや気もちをあらわすことば",
+   svg:`<svg class="ill" viewBox="0 0 320 104" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="6" width="312" height="92" rx="16" fill="#EAF7FA"/>
+<rect x="18" y="34" width="70" height="36" rx="10" fill="#1B7F94"/><text x="53" y="58" fill="#fff" font-size="17" text-anchor="middle">I</text>
+<text x="53" y="26" font-size="11" fill="#5e7c85" font-family="sans-serif" text-anchor="middle">だれが</text>
+<rect x="100" y="34" width="90" height="36" rx="10" fill="#FF7A6B"/><text x="145" y="58" fill="#fff" font-size="17" text-anchor="middle">play</text>
+<text x="145" y="26" font-size="11" fill="#5e7c85" font-family="sans-serif" text-anchor="middle">どうする</text>
+<rect x="202" y="34" width="100" height="36" rx="10" fill="#4CC38A"/><text x="252" y="58" fill="#fff" font-size="16" text-anchor="middle">soccer</text>
+<text x="252" y="26" font-size="11" fill="#5e7c85" font-family="sans-serif" text-anchor="middle">なにを</text>
+<text x="94" y="60" font-size="20" fill="#9ab">+</text><text x="196" y="60" font-size="20" fill="#9ab">+</text></svg>`,
+   p:["play（する）・go（行く）・like（すき）など。be動詞（am/is/are）と<b>いっしょには使わない</b>のがルール。"],
+   tip:"だれが → どうする → なにを　のじゅんばん！",
+   ex:[["I play soccer every day.","わたしは毎日サッカーをします。"],["We like music.","わたしたちは音楽がすきです。"]]},
+
+  {h:"よく出る うごきのことば",
+   p:["<span class='chip'>go 行く</span><span class='chip'>come 来る</span><span class='chip'>eat 食べる</span><span class='chip'>drink 飲む</span><span class='chip'>study 勉強する</span><span class='chip'>live 住む</span><span class='chip'>want ほしい</span><span class='chip'>have 持っている</span><span class='chip'>get up 起きる</span><span class='chip'>go to bed ねる</span>"]}
  ],
  qs:[
-  {q:"I ( ) soccer every day.",ja:"わたしは毎日サッカーをします。",c:["play","plays","playing","to play"],a:0,t:"主語が I なので s はつけない。"},
-  {q:"He ( ) TV after dinner.",ja:"かれは夕食のあとテレビを見ます。",c:["watch","watchs","watches","watching"],a:2,t:"ch でおわる語は es をつけて watches。"},
-  {q:"My sister ( ) to school by bus.",ja:"姉はバスで学校へ行きます。",c:["go","gos","goes","going"],a:2,t:"go は goes になる。"},
-  {q:"They ( ) English every day.",ja:"かれらは毎日英語を勉強します。",c:["studies","study","studys","studying"],a:1,t:"They は2人以上なので s はつけない。"},
-  {q:"She ( ) breakfast at seven.",ja:"かの女は7時に朝食を食べます。",c:["have","haves","has","having"],a:2,t:"have は has にかわる。"},
-  {q:"Ken ( ) a nice bike.",ja:"ケンはすてきな自転車を持っています。",c:["have","has","haves","having"],a:1,t:"Ken は1人なので has。"},
-  {q:"I ( ) like natto.",ja:"わたしは納豆がすきではありません。",c:["am not","doesn't","don't","not"],a:2,t:"主語が I のひてい文は don't。"},
-  {q:"My brother ( ) like carrots.",ja:"弟はにんじんがすきではありません。",c:["don't","doesn't","isn't","not"],a:1,t:"brother は1人なので doesn't。"},
-  {q:"( ) you play the piano?",ja:"あなたはピアノをひきますか？",c:["Are","Does","Do","Is"],a:2,t:"you のぎもん文は Do。"},
-  {q:"( ) your mother cook every day?",ja:"お母さんは毎日料理をしますか？",c:["Do","Does","Is","Are"],a:1,t:"mother は1人なので Does。"},
-  {q:"Emi ( ) her homework at six.",ja:"エミは6時に宿題をします。",c:["do","does","doing","is do"],a:1,t:"Emi は1人なので does。"},
-  {q:"Does he ( ) baseball?",ja:"かれは野球をしますか？",c:["plays","played","play","playing"],a:2,t:"Does のあとの動詞は もとの形（s なし）。"}
+  {q:"I ( ) soccer every day.",ja:"わたしは毎日サッカーをします。",c:["play","am play","playing","am"],a:0,t:"be動詞といっしょには使わない。play だけ。"},
+  {q:"We ( ) in Osaka.",ja:"わたしたちは大阪に住んでいます。",c:["are live","live","living","lives"],a:1,t:"are と live は いっしょに使えない。"},
+  {q:"They ( ) English every day.",ja:"かれらは毎日英語を勉強します。",c:["studies","study","are study","studys"],a:1,t:"They は2人以上なので study。"},
+  {q:"I ( ) up at six every morning.",ja:"わたしは毎朝6時に起きます。",c:["am get","get","getting","gets"],a:1,t:"主語が I なので get。"},
+  {q:"You ( ) a nice bike.",ja:"あなたはすてきな自転車を持っています。",c:["are have","has","have","having"],a:2,t:"You なので have。"},
+  {q:"I ( ) to school by bus.",ja:"わたしはバスで学校へ行きます。",c:["go","goes","am go","going"],a:0,t:"I なので go。"},
+  {q:"We ( ) breakfast at seven.",ja:"わたしたちは7時に朝食を食べます。",c:["eats","are eat","eat","eating"],a:2,t:"We なので eat。"},
+  {q:"My friends ( ) baseball after school.",ja:"友だちは放課後に野球をします。",c:["plays","play","are play","playing"],a:1,t:"friends は2人以上なので play。"},
+  {q:"I ( ) a new racket.",ja:"わたしは新しいラケットがほしいです。",c:["am want","wants","want","wanting"],a:2,t:"I なので want。"},
+  {q:"You and Ken ( ) to bed at nine.",ja:"あなたとケンは9時にねます。",c:["goes","go","are go","going"],a:1,t:"2人なので go。"}
 ]},
 
-{id:2,emo:"🐠",name:"いま〜してる島",sub:"現在進行形",color:"#FF9F5A",
+/* ---------- 3 三単現のs ---------- */
+{id:2,emo:"✨",name:"エスがつく島",sub:"三単現の s",
  learn:[
-  {h:"be動詞 + 動詞ing",p:["「<b>いま〜している</b>ところ」をあらわす言いかた。"],
-   ex:[["He is reading a book.","かれは本を読んでいます。"],["I am eating lunch now.","わたしは今、昼食を食べています。"]]},
-  {h:"ing のつけかた",p:["<span class='chip'>ふつう → +ing</span> play→playing","<span class='chip'>e でおわる → e をとって ing</span> take→taking / drive→driving","<span class='chip'>みじかい音+子音 → さいごの字をかさねる</span> swim→swimming / run→running"]},
-  {h:"ぎもん文・ひてい文",p:["be動詞を前に出せば ぎもん文。うしろに not を入れれば ひてい文。"],
-   ex:[["Is he eating lunch?","かれは昼食を食べていますか？"],["He isn't playing soccer.","かれはサッカーをしていません。"]]}
+  {h:"「じぶん・あいて」いがいで 1人・1つ なら s！",
+   svg:`<svg class="ill" viewBox="0 0 320 128" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="152" height="120" rx="16" fill="#FFF3D0"/>
+<rect x="164" y="4" width="152" height="120" rx="16" fill="#EAF7FA"/>
+<text x="80" y="26" font-size="11" fill="#a97a06" font-family="sans-serif" text-anchor="middle">1人・1つ（he, she, Ken）</text>
+<circle cx="80" cy="54" r="15" fill="#F4A63C"/><rect x="70" y="70" width="20" height="20" rx="7" fill="#F4A63C"/>
+<text x="80" y="114" font-size="17" fill="#8a6410" text-anchor="middle">play<tspan fill="#E0480F" font-size="22">s</tspan></text>
+<text x="240" y="26" font-size="11" fill="#5e7c85" font-family="sans-serif" text-anchor="middle">I・You・2人以上</text>
+<circle cx="222" cy="54" r="13" fill="#2BC4D6"/><rect x="213" y="68" width="18" height="20" rx="6" fill="#2BC4D6"/>
+<circle cx="258" cy="54" r="13" fill="#1B7F94"/><rect x="249" y="68" width="18" height="20" rx="6" fill="#1B7F94"/>
+<text x="240" y="114" font-size="17" fill="#0d5a6b" text-anchor="middle">play</text></svg>`,
+   p:["he, she, it, my father, Ken … <b>じぶん(I)とあいて(you)いがいで 1人・1つ</b> のとき、動詞に <span class='hl'>s</span> をつける。"],
+   tip:"かれ・かの女・それ が ひとつなら エスをつける！"},
+
+  {h:"s のつけかた 4つのルール",
+   svg:`<svg class="ill" viewBox="0 0 320 138" font-family="Verdana,sans-serif" font-weight="700" font-size="14">
+<rect x="4" y="4" width="312" height="130" rx="16" fill="#FFFDF5" stroke="#dfeef2" stroke-width="2"/>
+<text x="18" y="32" fill="#0d5a6b">play</text><text x="66" y="32" fill="#9ab">→</text><text x="92" y="32" fill="#1B7F94">play<tspan fill="#E0480F">s</tspan></text>
+<text x="180" y="32" font-size="11" font-family="sans-serif" fill="#5e7c85">ふつうは s</text>
+<text x="18" y="64" fill="#0d5a6b">watch</text><text x="76" y="64" fill="#9ab">→</text><text x="102" y="64" fill="#1B7F94">watch<tspan fill="#E0480F">es</tspan></text>
+<text x="200" y="64" font-size="11" font-family="sans-serif" fill="#5e7c85">s sh ch x o は es</text>
+<text x="18" y="96" fill="#0d5a6b">study</text><text x="74" y="96" fill="#9ab">→</text><text x="100" y="96" fill="#1B7F94">stud<tspan fill="#E0480F">ies</tspan></text>
+<text x="196" y="96" font-size="11" font-family="sans-serif" fill="#5e7c85">子音+y は ies</text>
+<text x="18" y="124" fill="#0d5a6b">have</text><text x="70" y="124" fill="#9ab">→</text><text x="96" y="124" fill="#E0480F">has</text>
+<text x="160" y="124" font-size="11" font-family="sans-serif" fill="#5e7c85">have だけ とくべつ！</text></svg>`,
+   p:["go → goes、do → does も es のなかま。"],
+   ex:[["My sister watches TV.","姉はテレビを見ます。"],["He has a nice bike.","かれはすてきな自転車を持っています。"]]}
+ ],
+ qs:[
+  {q:"He ( ) TV after dinner.",ja:"かれは夕食のあとテレビを見ます。",c:["watch","watchs","watches","watching"],a:2,t:"ch でおわる語は es。"},
+  {q:"My sister ( ) to school by bus.",ja:"姉はバスで学校へ行きます。",c:["go","gos","goes","going"],a:2,t:"go は goes。"},
+  {q:"She ( ) breakfast at seven.",ja:"かの女は7時に朝食を食べます。",c:["have","haves","has","having"],a:2,t:"have は has にかわる。"},
+  {q:"Ken ( ) English every day.",ja:"ケンは毎日英語を勉強します。",c:["study","studys","studies","studing"],a:2,t:"子音+y は ies。"},
+  {q:"My father ( ) soccer on Sunday.",ja:"父は日曜日にサッカーをします。",c:["play","plays","playes","playing"],a:1,t:"ふつうは s をつけるだけ。"},
+  {q:"I ( ) music every night.",ja:"わたしは毎晩音楽を聞きます。",c:["listens","listen","listening","listenes"],a:1,t:"I には s をつけない。"},
+  {q:"My dog ( ) very fast.",ja:"わたしの犬はとても速く走ります。",c:["run","runs","runes","running"],a:1,t:"dog は1ぴきなので runs。"},
+  {q:"They ( ) in Tokyo.",ja:"かれらは東京に住んでいます。",c:["lives","live","living","liveses"],a:1,t:"They は2人以上なので s なし。"},
+  {q:"Emi ( ) her homework at six.",ja:"エミは6時に宿題をします。",c:["do","dos","does","doing"],a:2,t:"do は does。"},
+  {q:"My mother ( ) lunch every day.",ja:"母は毎日昼食を作ります。",c:["cook","cooks","cookes","cooking"],a:1,t:"mother は1人なので cooks。"}
+]},
+
+/* ---------- 4 疑問文 ---------- */
+{id:3,emo:"🐙",name:"しつもんの島",sub:"疑問文のつくりかた",
+ learn:[
+  {h:"be動詞の文 → 前にジャンプ！",
+   svg:`<svg class="ill" viewBox="0 0 320 128" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="120" rx="16" fill="#EAF7FA"/>
+<rect x="18" y="26" width="66" height="32" rx="8" fill="#1B7F94"/><text x="51" y="48" fill="#fff" font-size="15" text-anchor="middle">You</text>
+<rect x="90" y="26" width="60" height="32" rx="8" fill="#FF7A6B"/><text x="120" y="48" fill="#fff" font-size="15" text-anchor="middle">are</text>
+<text x="160" y="48" font-size="14" fill="#0d5a6b">busy .</text>
+<path d="M120 22 C120 4, 40 4, 40 74" fill="none" stroke="#FF7A6B" stroke-width="3" stroke-dasharray="5 4"/>
+<path d="M40 82 l-6 -10 h12 z" fill="#FF7A6B"/>
+<rect x="18" y="86" width="60" height="32" rx="8" fill="#FF7A6B"/><text x="48" y="108" fill="#fff" font-size="15" text-anchor="middle">Are</text>
+<rect x="84" y="86" width="66" height="32" rx="8" fill="#1B7F94"/><text x="117" y="108" fill="#fff" font-size="15" text-anchor="middle">you</text>
+<text x="158" y="108" font-size="14" fill="#0d5a6b">busy ?</text></svg>`,
+   p:["be動詞を <b>文のいちばん前</b> に出して、さいごに <b>?</b> をつけるだけ。"],
+   ex:[["Are you from Canada? — Yes, I am. / No, I'm not.","カナダ出身ですか？ — はい／いいえ。"]]},
+
+  {h:"一般動詞の文 → Do / Does をつれてくる",
+   svg:`<svg class="ill" viewBox="0 0 320 122" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="114" rx="16" fill="#FFFDF5" stroke="#dfeef2" stroke-width="2"/>
+<rect x="16" y="20" width="60" height="30" rx="8" fill="#4CC38A"/><text x="46" y="41" fill="#fff" font-size="15" text-anchor="middle">Do</text>
+<text x="86" y="41" font-size="14" fill="#0d5a6b">you play tennis ?</text>
+<text x="16" y="66" font-size="11" font-family="sans-serif" fill="#5e7c85">I・You・2人以上 → Do</text>
+<rect x="16" y="76" width="72" height="30" rx="8" fill="#F4A63C"/><text x="52" y="97" fill="#fff" font-size="15" text-anchor="middle">Does</text>
+<text x="98" y="97" font-size="14" fill="#0d5a6b">he play tennis ?</text>
+<text x="98" y="66" font-size="11" font-family="sans-serif" fill="#a97a06">1人・1つ → Does</text></svg>`,
+   p:["<b>Does のあとの動詞に s はつけない！</b>　Does he play〜?（× plays）"],
+   tip:"エスは Does がもらっていく！",
+   ex:[["Does your brother like music? — Yes, he does.","お兄さんは音楽がすきですか？ — はい。"]]}
+ ],
+ qs:[
+  {q:"( ) you from Canada?",ja:"あなたはカナダ出身ですか？",c:["Is","Am","Are","Do"],a:2,t:"be動詞の文。you なので Are。"},
+  {q:"( ) you play the piano?",ja:"あなたはピアノをひきますか？",c:["Are","Does","Do","Is"],a:2,t:"一般動詞 play の文。you なので Do。"},
+  {q:"( ) your mother cook every day?",ja:"お母さんは毎日料理をしますか？",c:["Do","Does","Is","Are"],a:1,t:"mother は1人なので Does。"},
+  {q:"Does he ( ) baseball?",ja:"かれは野球をしますか？",c:["plays","played","play","playing"],a:2,t:"Does のあとは s なしの play。"},
+  {q:"( ) this your bag?",ja:"これはあなたのかばんですか？",c:["Do","Does","Is","Are"],a:2,t:"this は1つ。be動詞の Is。"},
+  {q:"— Do you like natto?  — Yes, I ( ).",ja:"納豆はすき？ — うん、すきだよ。",c:["am","do","does","like"],a:1,t:"Do できかれたら do でこたえる。"},
+  {q:"— Does Ken study English?  — Yes, he ( ).",ja:"ケンは英語を勉強しますか？ — はい。",c:["do","is","does","can"],a:2,t:"Does できかれたら does。"},
+  {q:"— Are you tired?  — No, I'm ( ).",ja:"つかれてる？ — ううん。",c:["not","don't","doesn't","no"],a:0,t:"be動詞なので I'm not。"},
+  {q:"( ) they in the park?",ja:"かれらは公園にいますか？",c:["Do","Is","Are","Does"],a:2,t:"they は2人以上。be動詞の Are。"},
+  {q:"( ) your sister have a dog?",ja:"お姉さんは犬を飼っていますか？",c:["Do","Does","Is","Are"],a:1,t:"sister は1人なので Does。"}
+]},
+
+/* ---------- 5 否定文 ---------- */
+{id:4,emo:"🦀",name:"ちがうよ島",sub:"否定文（not）",
+ learn:[
+  {h:"be動詞は うしろに not",
+   svg:`<svg class="ill" viewBox="0 0 320 112" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="104" rx="16" fill="#EAF7FA"/>
+<rect x="18" y="24" width="56" height="32" rx="8" fill="#1B7F94"/><text x="46" y="46" fill="#fff" font-size="15" text-anchor="middle">She</text>
+<rect x="80" y="24" width="46" height="32" rx="8" fill="#FF7A6B"/><text x="103" y="46" fill="#fff" font-size="15" text-anchor="middle">is</text>
+<rect x="132" y="24" width="56" height="32" rx="8" fill="#C9503F"/><text x="160" y="46" fill="#fff" font-size="15" text-anchor="middle">not</text>
+<text x="196" y="46" font-size="13" fill="#0d5a6b">my sister.</text>
+<text x="18" y="82" font-size="12" font-family="sans-serif" fill="#5e7c85">ちぢめると…</text>
+<text x="110" y="84" font-size="15" fill="#C9503F">isn't / aren't / I'm not</text></svg>`,
+   p:["is not → <b>isn't</b>　are not → <b>aren't</b>　am not は ちぢめずに <b>I'm not</b>。"]},
+
+  {h:"一般動詞は 前に don't / doesn't",
+   svg:`<svg class="ill" viewBox="0 0 320 118" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="110" rx="16" fill="#FFFDF5" stroke="#dfeef2" stroke-width="2"/>
+<text x="16" y="38" font-size="14" fill="#0d5a6b">I</text>
+<rect x="34" y="18" width="74" height="28" rx="8" fill="#C9503F"/><text x="71" y="38" fill="#fff" font-size="14" text-anchor="middle">don't</text>
+<text x="118" y="38" font-size="14" fill="#0d5a6b">like carrots.</text>
+<text x="16" y="58" font-size="11" font-family="sans-serif" fill="#5e7c85">I・You・2人以上</text>
+<text x="16" y="94" font-size="14" fill="#0d5a6b">He</text>
+<rect x="46" y="74" width="88" height="28" rx="8" fill="#F4A63C"/><text x="90" y="94" fill="#fff" font-size="14" text-anchor="middle">doesn't</text>
+<text x="144" y="94" font-size="14" fill="#0d5a6b">like carrots.</text>
+<text x="230" y="58" font-size="11" font-family="sans-serif" fill="#a97a06">1人・1つ</text></svg>`,
+   p:["<b>doesn't のあとの動詞に s はつけない！</b>　He doesn't like〜（× likes）"],
+   tip:"be動詞は うしろに not、一般動詞は 前に don't！"}
+ ],
+ qs:[
+  {q:"She ( ) my sister.",ja:"かの女はわたしの姉ではありません。",c:["don't","isn't","doesn't","not"],a:1,t:"be動詞の文なので isn't。"},
+  {q:"I ( ) like natto.",ja:"わたしは納豆がすきではありません。",c:["am not","doesn't","don't","isn't"],a:2,t:"一般動詞。I なので don't。"},
+  {q:"My brother ( ) like carrots.",ja:"弟はにんじんがすきではありません。",c:["don't","doesn't","isn't","aren't"],a:1,t:"brother は1人なので doesn't。"},
+  {q:"They ( ) in the classroom.",ja:"かれらは教室にいません。",c:["don't","doesn't","aren't","isn't"],a:2,t:"be動詞の文。they なので aren't。"},
+  {q:"He doesn't ( ) TV.",ja:"かれはテレビを見ません。",c:["watches","watch","watching","watched"],a:1,t:"doesn't のあとは s なしの watch。"},
+  {q:"I ( ) hungry now.",ja:"わたしは今おなかがすいていません。",c:["amn't","don't","am not","isn't"],a:2,t:"am not は ちぢめずにつかう。"},
+  {q:"We ( ) go to school on Sunday.",ja:"日曜日は学校へ行きません。",c:["aren't","don't","doesn't","isn't"],a:1,t:"一般動詞。We なので don't。"},
+  {q:"This ( ) my pencil.",ja:"これはわたしのえんぴつではありません。",c:["don't","doesn't","isn't","aren't"],a:2,t:"This は1つなので isn't。"},
+  {q:"My sister doesn't ( ) a bike.",ja:"姉は自転車を持っていません。",c:["has","have","having","haves"],a:1,t:"doesn't のあとは have（もとの形）。"},
+  {q:"You ( ) late. It's only seven.",ja:"おそくないよ。まだ7時だよ。",c:["don't","aren't","isn't","doesn't"],a:1,t:"be動詞の文。you なので aren't。"}
+]},
+
+/* ---------- 6 can ---------- */
+{id:5,emo:"🦜",name:"できるよ島",sub:"助動詞 can",
+ learn:[
+  {h:"can + 動詞のもとの形",
+   svg:`<svg class="ill" viewBox="0 0 320 112" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="104" rx="16" fill="#EAF7FA"/>
+<rect x="18" y="34" width="54" height="34" rx="17" fill="#1B7F94"/><text x="45" y="57" fill="#fff" font-size="15" text-anchor="middle">He</text>
+<rect x="82" y="34" width="60" height="34" rx="17" fill="#B388FF"/><text x="112" y="57" fill="#fff" font-size="16" text-anchor="middle">can</text>
+<rect x="152" y="34" width="74" height="34" rx="17" fill="#4CC38A"/><text x="189" y="57" fill="#fff" font-size="16" text-anchor="middle">swim</text>
+<text x="189" y="26" font-size="11" font-family="sans-serif" fill="#5e7c85" text-anchor="middle">s も ing も なし！</text>
+<text x="240" y="58" font-size="13" font-family="sans-serif" fill="#0d5a6b">fast.</text>
+<text x="112" y="88" font-size="11" font-family="sans-serif" fill="#7c5cc4" text-anchor="middle">〜できる</text></svg>`,
+   p:["can のうしろの動詞は かならず <b>はだかの形</b>（s も ing もつけない）。"],
+   tip:"キャンのあとは はだかの動詞！",
+   ex:[["She can play the guitar.","かの女はギターをひけます。"]]},
+
+  {h:"できない・きくとき",
+   p:["ひてい文 → can not をちぢめて <b>can't</b>","ぎもん文 → <b>Can</b> を文のはじめに出すだけ"],
+   ex:[["I can't read French.","わたしはフランス語が読めません。"],["Can you cook curry? — Yes, I can. / No, I can't.","カレーを作れますか？ — はい／いいえ。"]]}
+ ],
+ qs:[
+  {q:"I ( ) swim very fast.",ja:"わたしはとても速く泳げます。",c:["am","can","do","is"],a:1,t:"「〜できる」は can。"},
+  {q:"He can ( ) the guitar.",ja:"かれはギターをひけます。",c:["plays","playing","play","to play"],a:2,t:"can のあとは はだかの動詞。"},
+  {q:"( ) you cook curry?",ja:"カレーを作れますか？",c:["Are","Do","Can","Is"],a:2,t:"「〜できますか」は Can 〜?"},
+  {q:"She ( ) read French.",ja:"かの女はフランス語が読めません。",c:["can't","doesn't can","isn't","not can"],a:0,t:"「できない」は can't。"},
+  {q:"My dog can ( ) very fast.",ja:"わたしの犬はとても速く走れます。",c:["runs","running","ran","run"],a:3,t:"can + run。"},
+  {q:"Can Ken ( ) English?",ja:"ケンは英語を話せますか？",c:["speaks","speak","speaking","spoke"],a:1,t:"Can のあとも はだかの動詞。"},
+  {q:"— Can you ski?  — Yes, I ( ).",ja:"スキーできる？ — うん、できるよ。",c:["do","am","can","can't"],a:2,t:"Can できかれたら can。"},
+  {q:"Birds can ( ) in the sky.",ja:"鳥は空を飛べます。",c:["flies","flying","fly","flew"],a:2,t:"can + fly。"},
+  {q:"— Can she play tennis?  — No, she ( ).",ja:"かの女はテニスができますか？ — いいえ。",c:["doesn't","isn't","can't","don't"],a:2,t:"No のときは can't。"},
+  {q:"You can ( ) my pencil.",ja:"わたしのえんぴつを使っていいよ。",c:["uses","using","use","used"],a:2,t:"can + use。"}
+]},
+
+/* ---------- 7 現在進行形 ---------- */
+{id:6,emo:"🐠",name:"いま〜してる島",sub:"現在進行形",
+ learn:[
+  {h:"be動詞 + 動詞ing =「いま〜している」",
+   svg:`<svg class="ill" viewBox="0 0 320 118" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="110" rx="16" fill="#EAF7FA"/>
+<circle cx="44" cy="56" r="26" fill="#fff" stroke="#1B7F94" stroke-width="3"/>
+<line x1="44" y1="56" x2="44" y2="38" stroke="#1B7F94" stroke-width="3" stroke-linecap="round"/>
+<line x1="44" y1="56" x2="57" y2="62" stroke="#FF7A6B" stroke-width="3" stroke-linecap="round"/>
+<text x="44" y="102" font-size="11" font-family="sans-serif" fill="#5e7c85" text-anchor="middle">いま！</text>
+<rect x="86" y="38" width="54" height="34" rx="17" fill="#FF7A6B"/><text x="113" y="61" fill="#fff" font-size="15" text-anchor="middle">is</text>
+<text x="148" y="62" font-size="20" fill="#9ab">+</text>
+<rect x="168" y="38" width="132" height="34" rx="17" fill="#4CC38A"/>
+<text x="234" y="61" fill="#fff" font-size="16" text-anchor="middle">read<tspan fill="#FFE7B3" font-size="19">ing</tspan></text>
+<text x="234" y="30" font-size="11" font-family="sans-serif" fill="#5e7c85" text-anchor="middle">ing をつけるのを わすれない</text></svg>`,
+   p:["be動詞（am/is/are）と ing は <b>いつもセット</b>。どちらかが ぬけたらバツ！"],
+   tip:"ビー＋アイエヌジー、いま まさに！",
+   ex:[["He is reading a book.","かれは本を読んでいます。"]]},
+
+  {h:"ing のつけかた",
+   svg:`<svg class="ill" viewBox="0 0 320 116" font-family="Verdana,sans-serif" font-weight="700" font-size="14">
+<rect x="4" y="4" width="312" height="108" rx="16" fill="#FFFDF5" stroke="#dfeef2" stroke-width="2"/>
+<text x="18" y="34" fill="#0d5a6b">play</text><text x="66" y="34" fill="#9ab">→</text><text x="92" y="34" fill="#1B7F94">play<tspan fill="#2E9265">ing</tspan></text>
+<text x="192" y="34" font-size="11" font-family="sans-serif" fill="#5e7c85">そのまま ing</text>
+<text x="18" y="68" fill="#0d5a6b">take</text><text x="64" y="68" fill="#9ab">→</text><text x="90" y="68" fill="#1B7F94">tak<tspan fill="#2E9265">ing</tspan></text>
+<text x="170" y="68" font-size="11" font-family="sans-serif" fill="#5e7c85">e をけして ing</text>
+<text x="18" y="102" fill="#0d5a6b">swim</text><text x="70" y="102" fill="#9ab">→</text><text x="96" y="102" fill="#1B7F94">swim<tspan fill="#E0480F">m</tspan><tspan fill="#2E9265">ing</tspan></text>
+<text x="200" y="102" font-size="11" font-family="sans-serif" fill="#5e7c85">さいごの字をかさねる</text></svg>`,
+   p:["run → running、write → writing、make → making も おなじルール。"]}
  ],
  qs:[
   {q:"I ( ) reading a book now.",ja:"わたしは今、本を読んでいます。",c:["am","is","are","do"],a:0,t:"I のときは am + ing。"},
   {q:"She is ( ) her room now.",ja:"かの女は今、部屋をそうじしています。",c:["clean","cleans","cleaning","cleaned"],a:2,t:"be動詞のあとは 〜ing。"},
-  {q:"My father is ( ) a car.",ja:"父は車を運転しています。",c:["driveing","driving","drives","drive"],a:1,t:"drive は e をとって driving。"},
+  {q:"My father is ( ) a car.",ja:"父は車を運転しています。",c:["driveing","driving","drives","drive"],a:1,t:"drive は e をけして driving。"},
   {q:"They are ( ) in the pool.",ja:"かれらはプールで泳いでいます。",c:["swiming","swims","swimming","swim"],a:2,t:"swim は m をかさねて swimming。"},
-  {q:"Look! The baby is ( ).",ja:"見て！赤ちゃんがねむっています。",c:["sleep","sleeps","sleeping","slept"],a:2,t:"be動詞 + ing の形。"},
-  {q:"( ) he eating lunch now?",ja:"かれは今、昼食を食べていますか？",c:["Do","Is","Does","Are"],a:1,t:"進行形のぎもん文は be動詞を前に。he なので Is。"},
+  {q:"Look! The baby is ( ).",ja:"見て！赤ちゃんがねむっています。",c:["sleep","sleeps","sleeping","slept"],a:2,t:"be + ing の形。"},
+  {q:"( ) he eating lunch now?",ja:"かれは今、昼食を食べていますか？",c:["Do","Is","Does","Are"],a:1,t:"進行形のぎもん文は be動詞を前に。"},
   {q:"We ( ) watching TV now.",ja:"わたしたちは今テレビを見ています。",c:["is","am","are","do"],a:2,t:"We なので are。"},
-  {q:"My mother is ( ) dinner now.",ja:"母は今、夕食を作っています。",c:["make","makes","makeing","making"],a:3,t:"make は e をとって making。"},
+  {q:"My mother is ( ) dinner now.",ja:"母は今、夕食を作っています。",c:["make","makes","makeing","making"],a:3,t:"make は e をけして making。"},
   {q:"Ken is not ( ) soccer now.",ja:"ケンは今サッカーをしていません。",c:["play","plays","playing","played"],a:2,t:"not のあとも ing の形。"},
-  {q:"Look! The birds ( ) singing.",ja:"見て！鳥が歌っています。",c:["is","am","are","do"],a:2,t:"birds は2羽以上なので are。"},
-  {q:"I'm ( ) my homework now.",ja:"わたしは今、宿題をしています。",c:["do","does","doing","did"],a:2,t:"I'm は I am のこと。あとは ing。"},
-  {q:"He is ( ) a letter to his friend.",ja:"かれは友だちに手紙を書いています。",c:["write","writes","writting","writing"],a:3,t:"write は e をとって writing。"}
+  {q:"Look! The birds ( ) singing.",ja:"見て！鳥が歌っています。",c:["is","am","are","do"],a:2,t:"birds は2羽以上なので are。"}
 ]},
 
-{id:3,emo:"🦜",name:"できるよ島",sub:"助動詞 can",color:"#B388FF",
+/* ---------- 8 疑問詞 ---------- */
+{id:7,emo:"🔍",name:"5W1Hの島",sub:"疑問詞",
  learn:[
-  {h:"can =「〜できる」",p:["<b>can + 動詞のもとの形</b> で「〜できる」。動詞に s も ing もつけない！"],
-   ex:[["He can swim fast.","かれは速く泳げます。"],["She can play the guitar.","かの女はギターをひけます。"]]},
-  {h:"できないときは can't",p:["can not をちぢめて <b>can't</b>。"],
-   ex:[["I can't read French.","わたしはフランス語が読めません。"]]},
-  {h:"ぎもん文と こたえかた",p:["Can を文のはじめに出すだけ。"],
-   ex:[["Can you cook curry? — Yes, I can. / No, I can't.","カレーを作れますか？ — はい／いいえ。"]]}
- ],
- qs:[
-  {q:"I ( ) swim very fast.",ja:"わたしはとても速く泳げます。",c:["am","can","do","is"],a:1,t:"「〜できる」は can。"},
-  {q:"He can ( ) the guitar.",ja:"かれはギターをひけます。",c:["plays","playing","play","to play"],a:2,t:"can のあとは 動詞のもとの形。"},
-  {q:"( ) you cook curry?",ja:"あなたはカレーを作れますか？",c:["Are","Do","Can","Is"],a:2,t:"「〜できますか」は Can 〜?"},
-  {q:"She ( ) read French.",ja:"かの女はフランス語が読めません。",c:["can't","doesn't can","isn't","not can"],a:0,t:"「できない」は can't。"},
-  {q:"My dog can ( ) very fast.",ja:"わたしの犬はとても速く走れます。",c:["runs","running","ran","run"],a:3,t:"can のあとは もとの形 run。"},
-  {q:"Can Ken ( ) English?",ja:"ケンは英語を話せますか？",c:["speaks","speak","speaking","spoke"],a:1,t:"Can のあとも もとの形。"},
-  {q:"— Can you ski?  — Yes, I ( ).",ja:"スキーできる？ — うん、できるよ。",c:["do","am","can","can't"],a:2,t:"Can できかれたら can でこたえる。"},
-  {q:"Birds can ( ) in the sky.",ja:"鳥は空を飛べます。",c:["flies","flying","fly","flew"],a:2,t:"can + fly（もとの形）。"},
-  {q:"— Can she play tennis?  — No, she ( ).",ja:"かの女はテニスができますか？ — いいえ。",c:["doesn't","isn't","can't","don't"],a:2,t:"No のときは can't。"},
-  {q:"We can ( ) Mt. Fuji from here.",ja:"ここから富士山が見えます。",c:["see","sees","seeing","saw"],a:0,t:"can + see。"},
-  {q:"You can ( ) my pencil.",ja:"わたしのえんぴつを使っていいよ。",c:["uses","using","use","used"],a:2,t:"can + use。"},
-  {q:"I can't ( ) up early.",ja:"わたしは早く起きられません。",c:["gets","get","getting","got"],a:1,t:"can't のあとも もとの形。"}
-]},
-
-{id:4,emo:"🔍",name:"しつもんの島",sub:"疑問詞（5W1H）",color:"#FF6FA5",
- learn:[
-  {h:"6つのしつもんことば",p:["<span class='chip'>what なに</span><span class='chip'>where どこ</span><span class='chip'>when いつ</span><span class='chip'>who だれ</span><span class='chip'>which どっち</span><span class='chip'>how どうやって</span>"],
+  {h:"6つのしつもんことば",
+   svg:`<svg class="ill" viewBox="0 0 320 150" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="142" rx="16" fill="#EAF7FA"/>
+<g font-size="15">
+<rect x="14" y="16" width="94" height="36" rx="10" fill="#FF6FA5"/><text x="61" y="40" fill="#fff" text-anchor="middle">what</text>
+<rect x="114" y="16" width="94" height="36" rx="10" fill="#F4A63C"/><text x="161" y="40" fill="#fff" text-anchor="middle">where</text>
+<rect x="214" y="16" width="94" height="36" rx="10" fill="#4CC38A"/><text x="261" y="40" fill="#fff" text-anchor="middle">when</text>
+<rect x="14" y="58" width="94" height="36" rx="10" fill="#B388FF"/><text x="61" y="82" fill="#fff" text-anchor="middle">who</text>
+<rect x="114" y="58" width="94" height="36" rx="10" fill="#2BC4D6"/><text x="161" y="82" fill="#fff" text-anchor="middle">which</text>
+<rect x="214" y="58" width="94" height="36" rx="10" fill="#1B7F94"/><text x="261" y="82" fill="#fff" text-anchor="middle">how</text>
+</g>
+<g font-size="11" font-family="sans-serif" fill="#5e7c85" text-anchor="middle">
+<text x="61" y="110">なに</text><text x="161" y="110">どこ</text><text x="261" y="110">いつ</text>
+<text x="61" y="128">だれ</text><text x="161" y="128">どっち</text><text x="261" y="128">どうやって</text></g></svg>`,
+   p:["しつもんことばは <b>文のいちばん前</b>。そのうしろは ふつうのぎもん文がつづく。"],
    ex:[["Where do you live? — In Osaka.","どこに住んでいますか？ — 大阪です。"]]},
-  {h:"2語でつかう すごい形",p:["<b>how old</b> 何さい / <b>how many</b> いくつ / <b>how much</b> いくら / <b>what time</b> 何時 / <b>whose</b> だれの"],
-   ex:[["How old are you? — I'm eleven.","何さいですか？ — 11さいです。"],["What time do you get up? — At six.","何時に起きますか？ — 6時です。"]]},
-  {h:"こたえかたのコツ",p:["こたえの文を見れば しつもんことばが わかる！ 場所でこたえていたら where、時間なら when や what time。"]}
+
+  {h:"2語セットの すごい形",
+   p:["<span class='chip'>how old 何さい</span><span class='chip'>how many いくつ</span><span class='chip'>how much いくら</span><span class='chip'>what time 何時</span><span class='chip'>whose だれの</span>"],
+   tip:"こたえを見れば しつもんことばが わかる！ 場所→where、時こく→what time",
+   ex:[["What time do you get up? — At six.","何時に起きますか？ — 6時です。"]]}
  ],
  qs:[
   {q:"( ) is your name? — My name is Ken.",ja:"名前は何ですか？",c:["Who","What","Where","How"],a:1,t:"名前をきくときは What。"},
   {q:"( ) do you live? — In Osaka.",ja:"どこに住んでいますか？",c:["When","What","Where","Who"],a:2,t:"場所でこたえているので Where。"},
-  {q:"( ) is your birthday? — May 5th.",ja:"たん生日はいつですか？",c:["When","Where","Who","Which"],a:0,t:"日づけでこたえているので When。"},
+  {q:"( ) is your birthday? — May 5th.",ja:"たん生日はいつですか？",c:["When","Where","Who","Which"],a:0,t:"日づけなので When。"},
   {q:"( ) is that girl? — She is my sister.",ja:"あの女の子はだれですか？",c:["What","Whose","Who","How"],a:2,t:"人をきくときは Who。"},
   {q:"( ) old are you? — I'm twelve.",ja:"何さいですか？",c:["What","How","Who","When"],a:1,t:"年れいは How old。"},
-  {q:"( ) many books do you have?",ja:"本を何さつ持っていますか？",c:["What","Which","How","Who"],a:2,t:"数をきくときは How many。"},
+  {q:"( ) many books do you have?",ja:"本を何さつ持っていますか？",c:["What","Which","How","Who"],a:2,t:"数は How many。"},
   {q:"( ) time do you go to bed? — At nine.",ja:"何時にねますか？",c:["How","What","When","Where"],a:1,t:"「何時」は What time。"},
-  {q:"( ) do you go to school? — By bus.",ja:"どうやって学校に行きますか？",c:["What","Where","How","Who"],a:2,t:"方法をきくときは How。"},
-  {q:"( ) is your favorite color? — Blue.",ja:"すきな色は何ですか？",c:["Who","What","Where","When"],a:1,t:"ものをきくときは What。"},
-  {q:"( ) is my cap? — It's on the desk.",ja:"わたしのぼうしはどこですか？",c:["What","How","Where","Which"],a:2,t:"場所なので Where。"},
+  {q:"( ) do you go to school? — By bus.",ja:"どうやって学校に行きますか？",c:["What","Where","How","Who"],a:2,t:"方法は How。"},
   {q:"( ) do you like, tea or coffee?",ja:"紅茶とコーヒー、どっちがすき？",c:["Which","Who","When","How"],a:0,t:"2つからえらぶときは Which。"},
   {q:"( ) bag is this? — It's mine.",ja:"これはだれのかばん？ — わたしのです。",c:["Who","Whose","Which","What"],a:1,t:"「だれの」は Whose。"}
 ]},
 
-{id:5,emo:"🗺️",name:"ばしょと時間の島",sub:"前置詞",color:"#F4A63C",
+/* ---------- 9 複数形 ---------- */
+{id:8,emo:"🍎",name:"ふえるふえる島",sub:"名詞の複数形",
  learn:[
-  {h:"ばしょをあらわすことば",p:["<span class='chip'>in 〜の中</span><span class='chip'>on 〜の上（くっつく）</span><span class='chip'>under 〜の下</span><span class='chip'>by 〜のそば</span><span class='chip'>near 〜の近く</span><span class='chip'>at 〜で</span><span class='chip'>to 〜へ</span><span class='chip'>from 〜から</span>"],
-   ex:[["The cat is under the table.","ねこはテーブルの下にいます。"]]},
-  {h:"時間をあらわすことば",p:["<b>in</b> → 月・季節・年（in May）","<b>on</b> → 曜日・日づけ（on Monday）","<b>at</b> → 時こく（at six）","大きい順に in ＞ on ＞ at とおぼえよう！"]},
-  {h:"そのほか よく出るもの",p:["<b>with</b> 〜といっしょに / <b>for</b> 〜のために"],
-   ex:[["I play tennis with my friends.","友だちとテニスをします。"]]}
+  {h:"2つ以上には s をつける",
+   svg:`<svg class="ill" viewBox="0 0 320 116" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="150" height="108" rx="16" fill="#FFF3D0"/>
+<rect x="166" y="4" width="150" height="108" rx="16" fill="#EAF7FA"/>
+<circle cx="79" cy="46" r="20" fill="#FF7A6B"/><rect x="76" y="22" width="5" height="10" rx="2" fill="#7a4a2a"/>
+<text x="79" y="96" font-size="15" fill="#8a6410" text-anchor="middle">one apple</text>
+<circle cx="207" cy="46" r="17" fill="#FF7A6B"/><circle cx="241" cy="46" r="17" fill="#FF7A6B"/><circle cx="275" cy="46" r="17" fill="#FF7A6B"/>
+<text x="241" y="96" font-size="15" fill="#0d5a6b" text-anchor="middle">three apple<tspan fill="#E0480F" font-size="19">s</tspan></text></svg>`,
+   p:["one apple → two <b>apples</b>。ただし water や milk（数えられないもの）には s をつけない。"]},
+
+  {h:"とくべつな つけかた",
+   svg:`<svg class="ill" viewBox="0 0 320 152" font-family="Verdana,sans-serif" font-weight="700" font-size="13">
+<rect x="4" y="4" width="312" height="144" rx="16" fill="#FFFDF5" stroke="#dfeef2" stroke-width="2"/>
+<text x="18" y="32" fill="#0d5a6b">bus / dish / box</text><text x="150" y="32" fill="#9ab">→</text><text x="174" y="32" fill="#1B7F94">bus<tspan fill="#E0480F">es</tspan></text>
+<text x="18" y="50" font-size="10" font-family="sans-serif" fill="#5e7c85">s, sh, ch, x でおわる語は es</text>
+<text x="18" y="80" fill="#0d5a6b">tomato / potato</text><text x="146" y="80" fill="#9ab">→</text><text x="170" y="80" fill="#1B7F94">tomato<tspan fill="#E0480F">es</tspan></text>
+<text x="18" y="98" font-size="10" font-family="sans-serif" fill="#5e7c85">子音+o は es</text>
+<text x="18" y="124" fill="#0d5a6b">city / baby</text><text x="112" y="124" fill="#9ab">→</text><text x="136" y="124" fill="#1B7F94">cit<tspan fill="#E0480F">ies</tspan></text>
+<text x="200" y="124" fill="#0d5a6b">leaf</text><text x="234" y="124" fill="#9ab">→</text><text x="256" y="124" fill="#1B7F94">lea<tspan fill="#E0480F">ves</tspan></text>
+<text x="18" y="142" font-size="10" font-family="sans-serif" fill="#5e7c85">子音+y は ies　／　f, fe は ves</text></svg>`,
+   p:["形がガラッとかわるもの：child → <b>children</b>／man → <b>men</b>／woman → <b>women</b>／foot → <b>feet</b>"],
+   tip:"エス・エスエイチ・シーエイチ・エックス・オー は イーエス！"}
+ ],
+ qs:[
+  {q:"I have two ( ) in my room.",ja:"部屋に箱が2つあります。",c:["boxs","boxes","box","boxies"],a:1,t:"x でおわる語は es。"},
+  {q:"There are three big ( ) in Japan.",ja:"日本には大きな都市が3つあります。",c:["citys","cityes","cities","citis"],a:2,t:"子音+y は ies。"},
+  {q:"My mother buys five ( ).",ja:"母はトマトを5つ買います。",c:["tomatos","tomatoes","tomato","tomatoies"],a:1,t:"子音+o は es。"},
+  {q:"Please wash the ( ).",ja:"お皿をあらってください。",c:["dishs","dishies","dishes","dish"],a:2,t:"sh でおわる語は es。"},
+  {q:"Two ( ) are at the bus stop.",ja:"バス停にバスが2台います。",c:["bus","buss","busies","buses"],a:3,t:"s でおわる語は es。"},
+  {q:"I have three ( ).",ja:"うで時計を3つ持っています。",c:["watchs","watches","watchies","watch"],a:1,t:"ch でおわる語は es。"},
+  {q:"Look at those cute ( )!",ja:"あのかわいい赤ちゃんたちを見て！",c:["babys","babyes","babies","baby"],a:2,t:"子音+y は ies。"},
+  {q:"The ( ) are red in fall.",ja:"秋には葉っぱが赤くなります。",c:["leafs","leaves","leafes","leaf"],a:1,t:"f でおわる語は ves。"},
+  {q:"Three ( ) are playing in the park.",ja:"3人の子どもが公園であそんでいます。",c:["childs","childrens","children","childes"],a:2,t:"child → children。"},
+  {q:"Two ( ) are running over there.",ja:"むこうで男の人が2人走っています。",c:["mans","mens","men","manes"],a:2,t:"man → men。"}
+]},
+
+/* ---------- 10 前置詞 ---------- */
+{id:9,emo:"🗺️",name:"ばしょと時間の島",sub:"前置詞",
+ learn:[
+  {h:"ばしょ：ねこと箱でおぼえる",
+   svg:`<svg class="ill" viewBox="0 0 320 130" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="122" rx="16" fill="#EAF7FA"/>
+<g fill="#C99A3E">
+<rect x="24" y="46" width="60" height="42" rx="5"/><rect x="130" y="46" width="60" height="42" rx="5"/><rect x="236" y="46" width="60" height="42" rx="5"/></g>
+<g fill="#F4A63C">
+<circle cx="54" cy="66" r="13"/><path d="M45 56 l3 -10 l8 6 z"/><path d="M63 56 l-3 -10 l-8 6 z"/>
+<circle cx="160" cy="34" r="13"/><path d="M151 24 l3 -10 l8 6 z"/><path d="M169 24 l-3 -10 l-8 6 z"/>
+<circle cx="266" cy="104" r="13"/><path d="M257 94 l3 -10 l8 6 z"/><path d="M275 94 l-3 -10 l-8 6 z"/></g>
+<text x="54" y="116" font-size="15" fill="#0d5a6b" text-anchor="middle">in</text>
+<text x="160" y="116" font-size="15" fill="#0d5a6b" text-anchor="middle">on</text>
+<text x="266" y="34" font-size="15" fill="#0d5a6b" text-anchor="middle">under</text>
+<g font-size="10" font-family="sans-serif" fill="#5e7c85" text-anchor="middle">
+<text x="54" y="128">中に</text><text x="160" y="128">上に（くっつく）</text><text x="266" y="46">下に</text></g></svg>`,
+   p:["ほかにも <span class='chip'>by そば</span><span class='chip'>near 近く</span><span class='chip'>at 〜で</span><span class='chip'>to 〜へ</span><span class='chip'>from 〜から</span>"]},
+
+  {h:"時間：大きい順に in ＞ on ＞ at",
+   svg:`<svg class="ill" viewBox="0 0 320 120" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="112" rx="16" fill="#FFFDF5" stroke="#dfeef2" stroke-width="2"/>
+<rect x="16" y="20" width="288" height="30" rx="15" fill="#2BC4D6"/><text x="42" y="41" fill="#fff" font-size="15">in</text>
+<text x="160" y="41" fill="#fff" font-size="13" font-family="sans-serif" text-anchor="middle">年・季節・月　in May</text>
+<rect x="46" y="56" width="228" height="28" rx="14" fill="#4CC38A"/><text x="70" y="76" fill="#fff" font-size="15">on</text>
+<text x="176" y="76" fill="#fff" font-size="13" font-family="sans-serif" text-anchor="middle">日づけ・曜日　on Monday</text>
+<rect x="86" y="90" width="148" height="24" rx="12" fill="#F4A63C"/><text x="106" y="108" fill="#fff" font-size="14">at</text>
+<text x="172" y="108" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="middle">時こく　at six</text></svg>`,
+   p:["そのほか：<b>with</b> 〜といっしょに／<b>for</b> 〜のために"],
+   tip:"月は in、曜日は on、時こくは at！"}
  ],
  qs:[
   {q:"The cat is ( ) the box.",ja:"ねこは箱の中にいます。",c:["on","in","under","to"],a:1,t:"「中」は in。"},
@@ -481,58 +751,46 @@ const STAGES=[
   {q:"I have piano lessons ( ) Monday.",ja:"月曜日にピアノのレッスンがあります。",c:["in","at","on","to"],a:2,t:"曜日には on。"},
   {q:"My birthday is ( ) July.",ja:"わたしのたん生日は7月です。",c:["on","in","at","for"],a:1,t:"月には in。"},
   {q:"I get up ( ) six every morning.",ja:"毎朝6時に起きます。",c:["on","in","at","to"],a:2,t:"時こくには at。"},
-  {q:"My grandmother lives ( ) Osaka.",ja:"おばあちゃんは大阪に住んでいます。",c:["at","in","on","to"],a:1,t:"広い場所（市・国）には in。"},
+  {q:"My grandmother lives ( ) Osaka.",ja:"おばあちゃんは大阪に住んでいます。",c:["at","in","on","to"],a:1,t:"市や国には in。"},
   {q:"I play tennis ( ) my friends.",ja:"友だちとテニスをします。",c:["for","to","with","by"],a:2,t:"「〜といっしょに」は with。"},
-  {q:"Let's meet ( ) the station.",ja:"駅で会おうよ。",c:["at","in","on","under"],a:0,t:"待ち合わせの地点には at。"},
-  {q:"This present is ( ) you.",ja:"このプレゼントはあなたのためのものです。",c:["with","for","by","to"],a:1,t:"「〜のために」は for。"},
-  {q:"There is a picture ( ) the wall.",ja:"かべに絵がかかっています。",c:["in","at","on","under"],a:2,t:"かべに「くっついている」ので on。"},
+  {q:"There is a picture ( ) the wall.",ja:"かべに絵がかかっています。",c:["in","at","on","under"],a:2,t:"かべにくっついているので on。"},
   {q:"I go ( ) the library after school.",ja:"放課後、図書館へ行きます。",c:["to","in","at","for"],a:0,t:"「〜へ」は to。"}
 ]},
 
-{id:6,emo:"🍎",name:"ふえるふえる島",sub:"名詞の複数形",color:"#66C4A6",
+/* ---------- おまけ ---------- */
+{id:10,emo:"⛵",name:"おまけの島",sub:"命令文・Let's・頻度の語",
  learn:[
-  {h:"2つ以上には s をつける",p:["one apple → two <b>apples</b> のように、2つ以上のときは s。"]},
-  {h:"とくべつな つけかた",p:["<span class='chip'>s,sh,ch,x → +es</span> bus→buses / dish→dishes / church→churches / box→boxes","<span class='chip'>子音+o → +es</span> tomato→tomatoes / potato→potatoes","<span class='chip'>子音+y → yをiにして es</span> city→cities / baby→babies","<span class='chip'>f,fe → ves</span> leaf→leaves / knife→knives"]},
-  {h:"形がガラッとかわるもの",p:["child → <b>children</b> / man → <b>men</b> / woman → <b>women</b> / foot → <b>feet</b>","※ 数えられない water や milk には s をつけない。"]}
- ],
- qs:[
-  {q:"I have two ( ) in my room.",ja:"部屋に箱が2つあります。",c:["boxs","boxes","box","boxies"],a:1,t:"x でおわる語は es をつける。"},
-  {q:"There are three big ( ) in Japan.",ja:"日本には大きな都市が3つあります。",c:["citys","cityes","cities","citis"],a:2,t:"子音+y は y を i にして es。"},
-  {q:"My mother buys five ( ).",ja:"母はトマトを5つ買います。",c:["tomatos","tomatoes","tomato","tomatoies"],a:1,t:"子音+o は es をつける。"},
-  {q:"Please wash the ( ).",ja:"お皿をあらってください。",c:["dishs","dishies","dishes","dish"],a:2,t:"sh でおわる語は es。"},
-  {q:"Two ( ) are at the bus stop.",ja:"バス停にバスが2台います。",c:["bus","buss","busies","buses"],a:3,t:"s でおわる語は es。"},
-  {q:"I have three ( ).",ja:"うで時計を3つ持っています。",c:["watchs","watches","watchies","watch"],a:1,t:"ch でおわる語は es。"},
-  {q:"Look at those cute ( )!",ja:"あのかわいい赤ちゃんたちを見て！",c:["babys","babyes","babies","baby"],a:2,t:"子音+y は ies。"},
-  {q:"The ( ) are red in fall.",ja:"秋には葉っぱが赤くなります。",c:["leafs","leaves","leafes","leaf"],a:1,t:"f でおわる語は ves。"},
-  {q:"Three ( ) are playing in the park.",ja:"3人の子どもが公園であそんでいます。",c:["childs","childrens","children","childes"],a:2,t:"child のふくすう形は children。"},
-  {q:"Two ( ) are running over there.",ja:"むこうで男の人が2人走っています。",c:["mans","mens","men","manes"],a:2,t:"man のふくすう形は men。"},
-  {q:"I need two ( ) to cut the cake.",ja:"ケーキを切るのにナイフが2本いります。",c:["knifes","knives","knifs","knife"],a:1,t:"fe でおわる語は ves。"},
-  {q:"I have many ( ) in my bag.",ja:"かばんにたくさんの本が入っています。",c:["book","bookes","bookies","books"],a:3,t:"ふつうは s をつけるだけ。"}
-]},
+  {h:"命令文（〜しなさい）",
+   svg:`<svg class="ill" viewBox="0 0 320 112" font-family="Verdana,sans-serif" font-weight="700">
+<rect x="4" y="4" width="312" height="104" rx="16" fill="#EAF7FA"/>
+<rect x="16" y="22" width="60" height="30" rx="8" fill="#ccd8dc"/><text x="46" y="42" fill="#8fa3a9" font-size="14" text-anchor="middle">You</text>
+<line x1="16" y1="37" x2="76" y2="37" stroke="#C9503F" stroke-width="3"/>
+<text x="88" y="42" font-size="14" fill="#0d5a6b">stand up.</text>
+<text x="150" y="70" font-size="18" fill="#9ab" text-anchor="middle">↓</text>
+<rect x="16" y="76" width="86" height="30" rx="8" fill="#FF7A6B"/><text x="59" y="96" fill="#fff" font-size="15" text-anchor="middle">Stand</text>
+<text x="112" y="96" font-size="14" fill="#0d5a6b">up, please.</text>
+<text x="240" y="42" font-size="11" font-family="sans-serif" fill="#5e7c85">主語をけす！</text></svg>`,
+   p:["主語をはぶいて、<b>動詞のもとの形</b>ではじめる。be動詞のときは <b>Be</b>。"],
+   tip:"主語をけして 動詞ではじめれば 命令文！",
+   ex:[["Be quiet in the library.","図書館では静かにしなさい。"],["Don't run in the room.","部屋の中で走ってはいけません。"],["Let's play tennis!","テニスをしようよ！"]]},
 
-{id:7,emo:"⛵",name:"さいごの島",sub:"頻度の語・命令文・Let's",color:"#FFD166",
- learn:[
-  {h:"どれくらいの回数？",p:["<span class='chip'>always いつも</span><span class='chip'>usually たいてい</span><span class='chip'>often よく</span><span class='chip'>sometimes ときどき</span>","おく場所は <b>一般動詞の前</b>／<b>be動詞のうしろ</b>。"],
-   ex:[["I always get up at six.","わたしはいつも6時に起きます。"],["He is often busy.","かれはよくいそがしいです。"]]},
-  {h:"命令文（〜しなさい）",p:["主語をはぶいて、<b>動詞のもとの形</b>ではじめる。","be動詞のときは <b>Be</b> ではじめる。"],
-   ex:[["Stand up, please.","立ってください。"],["Be quiet in the library.","図書館では静かにしなさい。"]]},
-  {h:"Don't と Let's",p:["<b>Don't 〜.</b> 〜してはいけません","<b>Let's 〜.</b> 〜しようよ（あとは 動詞のもとの形）"],
-   ex:[["Don't run in the room.","部屋の中で走ってはいけません。"],["Let's play tennis!","テニスをしようよ！"]]}
+  {h:"どれくらいの回数？",
+   p:["<span class='chip'>always いつも</span><span class='chip'>usually たいてい</span><span class='chip'>often よく</span><span class='chip'>sometimes ときどき</span>","おく場所は <b>一般動詞の前</b>／<b>be動詞のうしろ</b>。"],
+   ex:[["I always get up at six.","わたしはいつも6時に起きます。"],["He is often busy.","かれはよくいそがしいです。"]]}
  ],
  qs:[
-  {q:"I ( ) get up at six.",ja:"わたしはいつも6時に起きます。",c:["always","very","many","much"],a:0,t:"「いつも」は always。"},
-  {q:"My brother ( ) reads comic books.",ja:"兄はよくマンガを読みます。",c:["often","much","very","too"],a:0,t:"「よく・しばしば」は often。"},
-  {q:"I ( ) go to the library on Sunday.",ja:"日曜日はときどき図書館へ行きます。",c:["always","sometimes","very","never mind"],a:1,t:"「ときどき」は sometimes。"},
-  {q:"She ( ) walks to school.",ja:"かの女はたいてい歩いて学校へ行きます。",c:["usually","much","very","many"],a:0,t:"「たいてい」は usually。"},
-  {q:"( ) up, please.",ja:"立ってください。",c:["Stands","Standing","Stand","To stand"],a:2,t:"命令文は 動詞のもとの形ではじめる。"},
-  {q:"( ) quiet in the library.",ja:"図書館では静かにしなさい。",c:["Are","Is","Be","Do"],a:2,t:"be動詞の命令文は Be ではじめる。"},
+  {q:"( ) up, please.",ja:"立ってください。",c:["Stands","Standing","Stand","To stand"],a:2,t:"命令文は 動詞のもとの形。"},
+  {q:"( ) quiet in the library.",ja:"図書館では静かにしなさい。",c:["Are","Is","Be","Do"],a:2,t:"be動詞の命令文は Be。"},
   {q:"( ) run in the classroom.",ja:"教室で走ってはいけません。",c:["Not","Don't","Doesn't","No"],a:1,t:"「〜するな」は Don't。"},
   {q:"( ) play tennis, Dad.",ja:"テニスをしようよ、お父さん。",c:["Let's","Do","Are","Be"],a:0,t:"「〜しようよ」は Let's。"},
-  {q:"Please ( ) the door.",ja:"ドアを開けてください。",c:["opens","opening","open","opened"],a:2,t:"Please のあとも 動詞のもとの形。"},
-  {q:"Let's ( ) shopping this afternoon.",ja:"午後、買い物に行こうよ。",c:["goes","going","go","went"],a:2,t:"Let's のあとは もとの形 go。"},
-  {q:"( ) your name and age here.",ja:"ここに名前と年れいを書いて。",c:["Writes","Write","Writing","Wrote"],a:1,t:"命令文なので Write。"},
-  {q:"Don't ( ) in this river.",ja:"この川で泳いではいけません。",c:["swims","swimming","swim","swam"],a:2,t:"Don't のあとも もとの形。"}
+  {q:"Please ( ) the door.",ja:"ドアを開けてください。",c:["opens","opening","open","opened"],a:2,t:"Please のあとも もとの形。"},
+  {q:"Let's ( ) shopping this afternoon.",ja:"午後、買い物に行こうよ。",c:["goes","going","go","went"],a:2,t:"Let's のあとは go。"},
+  {q:"I ( ) get up at six.",ja:"わたしはいつも6時に起きます。",c:["always","very","many","much"],a:0,t:"「いつも」は always。"},
+  {q:"My brother ( ) reads comic books.",ja:"兄はよくマンガを読みます。",c:["often","much","very","too"],a:0,t:"「よく」は often。"},
+  {q:"I ( ) go to the library on Sunday.",ja:"日曜日はときどき図書館へ行きます。",c:["always","sometimes","very","never"],a:1,t:"「ときどき」は sometimes。"},
+  {q:"She ( ) walks to school.",ja:"かの女はたいてい歩いて学校へ行きます。",c:["usually","much","very","many"],a:0,t:"「たいてい」は usually。"}
 ]}
+
 ];
 
 /* ===================== ほぞん ===================== */
@@ -576,7 +834,7 @@ function drawMap(){
   const pEl=document.getElementById('portStar');
   pEl.textContent=pst;pEl.className='st'+(pb>0?' got':'');
   document.getElementById('portNote').textContent=
-    portDone()?'港はクリアずみ！ いつでも復習できるよ 🔁':'港をクリアすると 8つの島がひらくよ 🔓';
+    portDone()?'港はクリアずみ！ いつでも復習できるよ 🔁':'港をクリアすると 10の島がひらくよ 🔓';
   const open=portDone();
   let h='';
   STAGES.forEach((s,i)=>{
@@ -629,7 +887,9 @@ function startLearn(){
   let h='';
   cur.learn.forEach(c=>{
     h+=`<div class="card"><h3>${c.h}</h3>`;
+    if(c.svg)h+=c.svg;
     (c.p||[]).forEach(p=>h+=`<div class="ln">${p}</div>`);
+    if(c.tip)h+=`<div class="tip"><b>おぼえかた</b><span>${c.tip}</span></div>`;
     (c.ex||[]).forEach(e=>h+=`<div class="ex"><b>${esc(e[0])}</b><span>${e[1]}</span></div>`);
     h+='</div>';
   });
